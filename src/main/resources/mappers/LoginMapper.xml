@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+        "thhp://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullstack4.sharelearning.mapper.LoginMapper">
+
+    <select id="login_info" resultType="com.fullstack4.sharelearning.domain.MemberVO">
+        select no,name,user_id,pwd,phoneNumber,email
+        from tbl_member
+        where user_id=#{user_id}
+    </select>
+
+</mapper>
