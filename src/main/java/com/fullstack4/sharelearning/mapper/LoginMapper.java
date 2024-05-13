@@ -13,4 +13,10 @@ public interface LoginMapper {
 
     int search_fail(String user_id);
 
+    MemberVO find_pwd(String user_id);
+
+    int new_pwd(@Param("user_id") String user_id, @Param("pwd") String pwd);
+
+    int update_tmp(String user_id);
+
 }

@@ -5,6 +5,7 @@
     <title>Title</title>
     <link href="/resources/css/common.css" rel="stylesheet">
     <script src="/resources/js/inputValidate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
         #frm{
 
@@ -24,8 +25,8 @@
         <h1>패스워드를 잊으셨나요?</h1>
         <p>본인인증을 진행하기 위해 아이디를 입력하여 주세요.</p>
         <div class="d-flex" style="justify-content: center; align-items: center">
-            <label for="pwd" >아이디</label>&nbsp;
-                <input type="text" name="pwd" id="pwd" class="form-control form-control-lg me-2" style="width: 400px">
+            <label for="user_id" >아이디</label>&nbsp;
+                <input type="text" name="user_id" id="user_id" class="form-control form-control-lg me-2" style="width: 400px">
             <input type="button" id="search_pwd" class="btn btn-primary btn-lg" value="임시비밀번호찾기">
 
         </div>
@@ -45,8 +46,9 @@
 <script>
 
     //유효성검사
-    validateInput('pwd');
-    const search_pwd = document.querySelector("#search_pwd");
+    validateInput('user_id');
+   /* const search_pwd = document.querySelector("#search_pwd");*/
+/*
     search_pwd.addEventListener("click",function(e){
        e.preventDefault();
       const checkBlank= validateBlank('pwd');
@@ -55,8 +57,47 @@
       }
 
     });
+*/
+
+    $(document).ready(function() {
+        $('#search_pwd').click(function(e) {
+            e.preventDefault(); // 폼 전송 기본 이벤트 방지
 
 
+            const user_id = $('#user_id').val();
+
+            if( user_id === "") {
+                alert("아이디나 비밀번호를 모두 입력해주세요.");
+                return false;
+            }
+
+
+            $.ajax({
+                url: '/login/find',
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify({
+                    user_id: user_id
+                }),
+
+                success: function(response) {
+
+
+                    if(response.success) {
+                        alert(response.message);
+                        window.location.href = response.redirect;
+                    } else {
+
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    alert("서버와의 통신 중 오류가 발생했습니다.");
+                }
+            });
+        });
+    });
 
 
 </script>

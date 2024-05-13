@@ -9,6 +9,11 @@
         from tbl_member
         where user_id=#{user_id}
     </select>
+    <update id="update_tmp">
+        update tbl_member
+        set tmp_state = 'N'
+        where user_id=#{user_id}
+    </update>
 
     <update id="reset_fail">
         update tbl_member
@@ -29,5 +34,21 @@
         from tbl_member
         where user_id=#{user_id}
     </select>
+
+    <select id="find_pwd" resultType="com.fullstack4.sharelearning.domain.MemberVO">
+        select user_id,pwd
+        from tbl_member
+        where user_id=#{user_id}
+    </select>
+
+    <update id="new_pwd">
+        update tbl_member
+        set pwd=#{pwd},
+        tmp_state ='Y'
+        where user_id=#{user_id}
+
+    </update>
+
+
 
 </mapper>

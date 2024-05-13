@@ -7,6 +7,7 @@
    <%-- <link rel="stylesheet" href="/resources/css/signin.css" />--%>
     <link href="/resources/css/common.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <Style>
 
   /*  html,body {
@@ -89,9 +90,6 @@
     $(document).ready(function() {
         $('#loginButton').click(function(e) {
             e.preventDefault(); // 폼 전송 기본 이벤트 방지
-
-
-
             const userId = $('#user_id').val();
             const pwd = $('#pwd').val();
 
@@ -99,8 +97,6 @@
                 alert("아이디나 비밀번호를 모두 입력해주세요.");
                 return false; // 이후 로직 실행을 막기 위해 함수 실행을 여기서 중단합니다.
             }
-
-
             $.ajax({
                 url: '/login/login',
                 type: 'POST',

@@ -54,8 +54,7 @@ public class LoginController {
 
         if(LoginMemberDTO !=null) {
 
-            HttpSession session = req.getSession();
-            session.setAttribute("memberDTO",LoginMemberDTO);
+
             
             //아이디 저장
             if(loginDTO.getSave_id()!=null) {
@@ -69,7 +68,8 @@ public class LoginController {
                 CookieUtil.deleteCookie(response, "save_id");
                 CookieUtil.deleteCookie(response, "save_id_flag");
             }
-
+            HttpSession session = req.getSession();
+            session.setAttribute("memberDTO",LoginMemberDTO);
 
             //6개월이상 로그인 내역 체크
             LocalDate lastDate = LoginMemberDTO.getLast_date();
@@ -148,6 +148,45 @@ public class LoginController {
     @GetMapping("/find")
     public void findPwdGet() {
 
-            System.out.println("패스워드찾기 get");
+
     }
+
+    @PostMapping("/find")
+    @ResponseBody
+    public ResponseEntity<?> findPwdPost(@RequestBody LoginDTO loginDTO,HttpServletRequest req,
+                            HttpServletResponse response) {
+        System.out.println("패스워드찾기 post"+ loginDTO.getUser_id());
+
+        MemberDTO memberDTO = loginServiceIf.find_pwd(loginDTO.getUser_id());
+        if(memberDTO != null){
+            System.out.println("findController 아이디일치 "+memberDTO.getPwd() );
+            Map<String, Object> resp = new HashMap<>();
+            resp.put("success", true);
+            resp.put("message"," 임시비밀번호 \n" + memberDTO.getPwd() +" 로 변경되었습니다. \n 다시 로그인해주세요.");
+            resp.put("redirect", "/login/login");
+
+            return ResponseEntity.ok().body(resp);
+        }
+        else{
+            System.out.println("findController 아이디불일치 " );
+            Map<String, Object> resp = new HashMap<>();
+            resp.put("success", false);
+            resp.put("message", "일치하는 아이디가 없습니다.");
+            return ResponseEntity.ok().body(resp);
+        }
+
+    }
+
+    @GetMapping("/update")
+    public void updatePwdGet() {
+
+
+    }
+
+    @PostMapping("/update")
+    public void updatePwdPost() {
+
+
+    }
+
 }

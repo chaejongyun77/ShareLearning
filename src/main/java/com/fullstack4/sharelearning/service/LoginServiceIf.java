@@ -12,4 +12,8 @@ public interface LoginServiceIf {
     int login_fail(String user_id);
 
     int search_fail(String user_id);
+
+    MemberDTO find_pwd(String user_id);
+
+
 }

@@ -4,6 +4,7 @@ import com.fullstack4.sharelearning.domain.MemberVO;
 import com.fullstack4.sharelearning.dto.LoginDTO;
 import com.fullstack4.sharelearning.dto.MemberDTO;
 import com.fullstack4.sharelearning.mapper.LoginMapper;
+import com.fullstack4.sharelearning.util.CommonUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -23,6 +24,7 @@ public class LoginServiceImpl implements LoginServiceIf{
     public MemberDTO login_info(LoginDTO loginDTO) {
 
         int reset_result=0;
+        int tmp_result=0;
         MemberDTO memberDTO = new MemberDTO();
 
         MemberVO memberVO = loginMapper.login_info(loginDTO.getUser_id(),loginDTO.getPwd());
@@ -33,8 +35,13 @@ public class LoginServiceImpl implements LoginServiceIf{
         }
         //로그인횟수 초기화
         reset_result = loginMapper.reset_fail(loginDTO.getUser_id());
-        System.out.println("로그인 횟수 초기화 :  " + reset_result);
+
         if(reset_result<=0){
+            throw new RuntimeException("RuntimeException for rollback");
+        }
+        //임시비밀번호 상태 N으로 변경
+        tmp_result= loginMapper.update_tmp(loginDTO.getUser_id());
+        if(tmp_result<=0){
             throw new RuntimeException("RuntimeException for rollback");
         }
 
@@ -55,6 +62,40 @@ public class LoginServiceImpl implements LoginServiceIf{
         int result = loginMapper.search_fail(user_id);
         return result;
     }
+
+    @Override
+    public MemberDTO find_pwd(String user_id) {
+
+        int update_pwd =0;
+
+        MemberVO memberVO = loginMapper.find_pwd(user_id);
+        if(memberVO !=null){
+            MemberDTO memberDTO = new MemberDTO();
+           memberDTO = modelMapper.map(memberVO, MemberDTO.class);
+
+           // 임시 비밀번호 생성 후 삽입
+            String tmp_pwd = CommonUtil.generate();
+
+           update_pwd = loginMapper.new_pwd(user_id,tmp_pwd);
+           memberDTO.setPwd(tmp_pwd);
+           if(update_pwd <0){
+               throw new RuntimeException("RuntimeException for rollback");
+           }
+            return memberDTO;
+        }
+        else{
+            MemberDTO memberDTO =null;
+            return memberDTO;
+        }
+
+
+
+
+
+    }
+
+
+
 
 
 }
