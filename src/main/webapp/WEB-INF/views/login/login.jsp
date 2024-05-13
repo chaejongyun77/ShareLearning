@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
    <%-- <link rel="stylesheet" href="/resources/css/signin.css" />--%>
     <link href="/resources/css/common.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -46,7 +46,7 @@
             </label>
         </div>
         <div class="d-grid gap-2 col-6 mx-auto">
-            <button class="btn btn-primary" type="button">패스워드찾기</button>
+            <button class="btn btn-primary" type="button" onclick="location.href='/login/find'">패스워드찾기</button>
             <button class="btn btn-primary" id= "loginButton" type="button" disabled >로그인</button>
         </div>
 
@@ -96,7 +96,7 @@
             const pwd = $('#pwd').val();
 
             if(userId === "" || pwd === "") {
-                alert("아이디와 비밀번호를 모두 입력해주세요.");
+                alert("아이디나 비밀번호를 모두 입력해주세요.");
                 return false; // 이후 로직 실행을 막기 위해 함수 실행을 여기서 중단합니다.
             }
 

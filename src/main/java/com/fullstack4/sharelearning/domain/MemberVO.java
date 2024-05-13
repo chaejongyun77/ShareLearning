@@ -2,6 +2,8 @@ package com.fullstack4.sharelearning.domain;
 
 import lombok.*;
 
+import java.time.LocalDate;
+
 @ToString
 @Getter
 @AllArgsConstructor
@@ -13,5 +15,8 @@ public class MemberVO {
     private String pwd;
     private String phoneNumber;
     private String email;
+    private int login_fail;
+    private LocalDate last_date;
+    private String state;
 
 }

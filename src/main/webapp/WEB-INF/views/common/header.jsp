@@ -5,7 +5,7 @@
 <head>
 
     <title>Include Header Example</title>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" >
     <style>
         .navbar-container{
             position: fixed;
@@ -21,7 +21,7 @@
 </head>
 <body>
 <div class="navbar-container"> <!-- 컨테이너 추가 -->
-    <ul class="nav nav-pills nav-fill">
+    <ul class="nav nav-pills nav-justified">
         <li class="nav-item">
             <a class="nav-link " aria-current="page" href="#">마이페이지</a>
         </li>

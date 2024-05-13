@@ -10,9 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +44,9 @@ public class LoginController {
             HttpServletResponse response,
             @RequestParam(name="acc_url", defaultValue = "/", required = false) String acc_url,
             Model model){
+
+
+
         String save_id = "";
         String uri = acc_url;
 
@@ -64,6 +70,30 @@ public class LoginController {
                 CookieUtil.deleteCookie(response, "save_id_flag");
             }
 
+
+            //6개월이상 로그인 내역 체크
+            LocalDate lastDate = LoginMemberDTO.getLast_date();
+            LocalDate currentDate = LocalDate.now();
+            // lastDate와 currentDate 사이의 기간을 계산합니다.
+            Period period = Period.between(lastDate, currentDate);
+            if (period.getMonths() >= 6 || period.getYears() > 0) {
+                Map<String, Object> resp = new HashMap<>();
+                resp.put("success", false);
+                resp.put("message", "6개월 이상 로그인 내역이 없습니다.\n 관리자에게 문의해주십시오.");
+                return ResponseEntity.ok().body(resp);
+
+            }
+
+            //로그인 규칙 위반
+            if(LoginMemberDTO.getState().equals("N")){
+                Map<String, Object> resp = new HashMap<>();
+                resp.put("success", false);
+                resp.put("message", "관리자 또는 이용 규칙 위반에 의해 이용이 제한된 아이디입니다.\n 관리자에게 문의해 주세요");
+                return ResponseEntity.ok().body(resp);
+
+
+            }
+
             Map<String, Object> resp = new HashMap<>();
             resp.put("success", true);
             resp.put("redirect", "/");
@@ -75,10 +105,49 @@ public class LoginController {
 
         }
 
+        //로그인 5회 이상 실패 체크
+        int fail_count = loginServiceIf.search_fail(loginDTO.getUser_id());
+        if(fail_count>=5){
+            Map<String, Object> resp = new HashMap<>();
+            resp.put("success", false);
+            resp.put("message", "5회 이상 로그인 실패로 아이디 잠금 처리된 아이디입니다. 관리자에게 문의해주세요.");
+            return ResponseEntity.ok().body(resp);
+        }
+
+
+
         System.out.println("로그인실패");
+        int fail_result = loginServiceIf.login_fail(loginDTO.getUser_id());
         Map<String, Object> resp = new HashMap<>();
         resp.put("success", false);
         resp.put("message", "로그인 실패.");
         return ResponseEntity.ok().body(resp);
+    }
+
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest req, HttpServletResponse response){
+        HttpSession session = req.getSession(false);
+        if(session!=null) {
+            session.invalidate();
+        }
+
+        String save_id = CookieUtil.getCookieValue(req,"save_id");
+        String save_id_flag = CookieUtil.getCookieValue(req,"save_id_flag");
+        if(save_id != null){
+            CookieUtil.deleteCookie(response,save_id);
+        }
+        if(save_id_flag !=null){
+            CookieUtil.deleteCookie(response,save_id_flag);
+        }
+
+
+
+        return "redirect:/";
+    }
+    @GetMapping("/find")
+    public void findPwdGet() {
+
+            System.out.println("패스워드찾기 get");
     }
 }

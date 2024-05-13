@@ -90,8 +90,14 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.0'
 
 
-
-
+/*
+    //이메일
+    implementation 'org.springframework:spring-context-support:5.3.24'
+    // JavaMail API
+    implementation 'javax.mail:javax.mail-api:1.6.2' // 버전은 사용 시점에 따라 최신으로 조정
+// JavaMail sender implementation
+    runtimeOnly 'com.sun.mail:javax.mail:1.6.2' // 버전은 사용 시점에 따라 최신으로 조정
+*/
 
 
 }

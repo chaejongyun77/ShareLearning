@@ -37,12 +37,43 @@
         <property name="dataSource" ref="dataSource" />
         <property name="mapperLocations" value="classpath:/mappers/**/*.xml"/>
     </bean>
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" />
 
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="regist*" rollback-for="Exception"/>
+            <tx:method name="modify*" rollback-for="Exception"/>
+            <tx:method name="delete*" rollback-for="Exception"/>
+            <tx:method name="reply_regist*" rollback-for="Exception"/>
+        </tx:attributes>
+    </tx:advice>
 
     <mybatis:scan base-package="com.fullstack4.sharelearning.mapper"/>
 
     <context:component-scan base-package="com.fullstack4.sharelearning.config"/>
     <context:component-scan base-package="com.fullstack4.sharelearning.service"/>
     <context:component-scan base-package="com.fullstack4.sharelearning.util"/>
+
+    <!--이메일 전송 -->
+    <!--<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        &lt;!&ndash; 네이버 SMTP 서버 설정 &ndash;&gt;
+        <property name="host" value="smtp.naver.com"/>
+        <property name="port" value="465"/>
+        <property name="username" value="네이버_이메일_아이디"/>
+        <property name="password" value="네이버_이메일_비밀번호"/>
+
+        &lt;!&ndash; JavaMail 관련 속성 &ndash;&gt;
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.smtp.starttls.required">true</prop>
+            </props>
+        </property>
+    </bean>
+-->
 
 </beans>

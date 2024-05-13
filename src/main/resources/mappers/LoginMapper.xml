@@ -5,7 +5,27 @@
 <mapper namespace="com.fullstack4.sharelearning.mapper.LoginMapper">
 
     <select id="login_info" resultType="com.fullstack4.sharelearning.domain.MemberVO">
-        select no,name,user_id,pwd,phoneNumber,email
+        select no,name,user_id,pwd,phoneNumber,email,login_fail,last_date,state
+        from tbl_member
+        where user_id=#{user_id}
+    </select>
+
+    <update id="reset_fail">
+        update tbl_member
+        set login_fail = 0,
+        last_date =now()
+        where user_id= #{user_id}
+    </update>
+
+    <update id ="login_fail" >
+        update tbl_member
+        set login_fail = login_fail+1
+        where user_id = #{user_id}
+
+    </update>
+
+    <select id ="search_fail">
+        select login_fail
         from tbl_member
         where user_id=#{user_id}
     </select>
