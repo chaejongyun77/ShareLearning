@@ -27,26 +27,33 @@ public class LoginServiceImpl implements LoginServiceIf{
         int tmp_result=0;
         MemberDTO memberDTO = new MemberDTO();
 
+
         MemberVO memberVO = loginMapper.login_info(loginDTO.getUser_id(),loginDTO.getPwd());
-        System.out.println("memberVO : " +memberVO);
+
+
         if(memberVO!=null && memberVO.getPwd().equals(loginDTO.getPwd())) {
+            
+
             memberDTO = modelMapper.map(memberVO, MemberDTO.class);
 
-        }
-        //로그인횟수 초기화
-        reset_result = loginMapper.reset_fail(loginDTO.getUser_id());
 
-        if(reset_result<=0){
-            throw new RuntimeException("RuntimeException for rollback");
-        }
-        //임시비밀번호 상태 N으로 변경
-        tmp_result= loginMapper.update_tmp(loginDTO.getUser_id());
-        if(tmp_result<=0){
-            throw new RuntimeException("RuntimeException for rollback");
+            //로그인횟수 초기화
+            reset_result = loginMapper.reset_fail(loginDTO.getUser_id());
+
+            if (reset_result <= 0) {
+                throw new RuntimeException("RuntimeException for rollback");
+            }
+            //임시비밀번호 상태 N으로 변경
+            tmp_result = loginMapper.update_tmp(loginDTO.getUser_id());
+            if (tmp_result <= 0) {
+                throw new RuntimeException("RuntimeException for rollback");
+            }
+
         }
 
 
         return memberDTO;
+
     }
 
     @Override
@@ -59,8 +66,15 @@ public class LoginServiceImpl implements LoginServiceIf{
 
     @Override
     public int search_fail(String user_id) {
-        int result = loginMapper.search_fail(user_id);
-        return result;
+
+         MemberVO memberVO = loginMapper.search_fail(user_id);
+
+         MemberDTO memberDTO = new MemberDTO();
+
+            memberDTO.setLogin_fail(memberVO.getLogin_fail());
+
+
+        return memberDTO.getLogin_fail();
     }
 
     @Override
@@ -88,14 +102,14 @@ public class LoginServiceImpl implements LoginServiceIf{
             return memberDTO;
         }
 
-
-
-
-
     }
 
+    @Override
+    public int update_pwd(String user_id, String pwd) {
+        int update_result = loginMapper.update_pwd(user_id,pwd);
+        return update_result;
 
-
+    }
 
 
 }

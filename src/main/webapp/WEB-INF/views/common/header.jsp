@@ -16,13 +16,41 @@
             max-width: 1024px;
             margin: 0 auto;
             width: 100%;
+            font-size:22px;
 
         }
     </style>
 </head>
 <body>
 <div class="navbar-container"> <!-- 컨테이너 추가 -->
-    <ul class="nav nav-pills nav-justified">
+
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <div class="col-md-3 mb-2 mb-md-0">
+            <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+                <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+            </a>
+        </div>
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+
+            <li><a href="#" class="nav-link px-2">마이페이지</a></li>
+            <li><a href="#" class="nav-link px-2">오늘의 학습</a></li>
+            <li><a href="#" class="nav-link px-2">나의 학습</a></li>
+            <li><a href="#" class="nav-link px-2">공유학습</a></li>
+        </ul>
+
+        <div class="col-md-3 text-end">
+            <c:choose>
+            <c:when test="${sessionScope.memberDTO !=null}">
+                <button type="button" class="btn btn-outline-primary me-2" onclick="location.href='/login/logout'">로그아웃</button>
+            </c:when>
+                <c:otherwise>
+            <button type="button" class="btn btn-outline-primary me-2" onclick="location.href='/login/login'" >로그인</button>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </header>
+    <%--<ul class="nav nav-pills nav-justified">
         <li class="nav-item">
             <a class="nav-link " aria-current="page" href="#">마이페이지</a>
         </li>
@@ -48,7 +76,7 @@
             </c:otherwise>
         </c:choose>
 
-    </ul>
+    </ul>--%>
 </div>
 
 </body>

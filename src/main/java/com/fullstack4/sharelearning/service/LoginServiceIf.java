@@ -15,5 +15,7 @@ public interface LoginServiceIf {
 
     MemberDTO find_pwd(String user_id);
 
+    int update_pwd(String user_id, String pwd);
+
 
 }

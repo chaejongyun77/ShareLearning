@@ -13,4 +13,5 @@ public class LoginDTO {
     private String user_id;
     private String pwd;
     private String save_id;
+    private String new_pwd;
 }

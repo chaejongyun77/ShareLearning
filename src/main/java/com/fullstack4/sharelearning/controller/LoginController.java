@@ -49,17 +49,42 @@ public class LoginController {
 
         String save_id = "";
         String uri = acc_url;
+        MemberDTO LoginMemberDTO = new MemberDTO();
 
-        MemberDTO LoginMemberDTO = loginServiceIf.login_info(loginDTO);
+        LoginMemberDTO = loginServiceIf.login_info(loginDTO);
 
-        if(LoginMemberDTO !=null) {
+        //로그인 5회 이상 실패 체크
+
+        int fail_count = loginServiceIf.search_fail(loginDTO.getUser_id());
+        if (fail_count >= 5) {
+            System.out.println("여기로 들어와야함 로그인실패");
+            Map<String, Object> resp = new HashMap<>();
+            resp.put("success", false);
+            resp.put("message", "5회 이상 로그인 실패로 아이디 잠금 처리된 아이디입니다. 관리자에게 문의해주세요.");
+            return ResponseEntity.ok().body(resp);
+        }
 
 
-            
+
+        if(LoginMemberDTO.getUser_id() != null) {
+
+        //임시비밀번호로 로그인 했을 시
+            if(LoginMemberDTO.getTmp_state().equals("Y")){
+                HttpSession session = req.getSession();
+                session.setAttribute("user_id",LoginMemberDTO.getUser_id());
+                Map<String, Object> resp = new HashMap<>();
+                resp.put("success", true);
+                resp.put("redirect", "/login/update");
+                resp.put("message", "비밀번호 변경페이지로 이동합니다.");
+                return ResponseEntity.ok().body(resp);
+
+            }
+
+
             //아이디 저장
             if(loginDTO.getSave_id()!=null) {
                 save_id=loginDTO.getUser_id();
-                CookieUtil.addCookie(response,"save_id",save_id,60*60*24);
+                CookieUtil.addCookie(response,"ㄹsave_id",save_id,60*60*24);
                 CookieUtil.addCookie(response,"save_id_flag","checked",60*60*24);
 
             }
@@ -86,6 +111,7 @@ public class LoginController {
 
             //로그인 규칙 위반
             if(LoginMemberDTO.getState().equals("N")){
+
                 Map<String, Object> resp = new HashMap<>();
                 resp.put("success", false);
                 resp.put("message", "관리자 또는 이용 규칙 위반에 의해 이용이 제한된 아이디입니다.\n 관리자에게 문의해 주세요");
@@ -105,22 +131,17 @@ public class LoginController {
 
         }
 
-        //로그인 5회 이상 실패 체크
-        int fail_count = loginServiceIf.search_fail(loginDTO.getUser_id());
-        if(fail_count>=5){
-            Map<String, Object> resp = new HashMap<>();
-            resp.put("success", false);
-            resp.put("message", "5회 이상 로그인 실패로 아이디 잠금 처리된 아이디입니다. 관리자에게 문의해주세요.");
-            return ResponseEntity.ok().body(resp);
-        }
 
 
 
-        System.out.println("로그인실패");
+
+
+
+
         int fail_result = loginServiceIf.login_fail(loginDTO.getUser_id());
         Map<String, Object> resp = new HashMap<>();
         resp.put("success", false);
-        resp.put("message", "로그인 실패.");
+        resp.put("message", "입력하신 아이디 또는 패스워드가 일치하지 않습니다.");
         return ResponseEntity.ok().body(resp);
     }
 
@@ -184,9 +205,47 @@ public class LoginController {
     }
 
     @PostMapping("/update")
-    public void updatePwdPost() {
+    @ResponseBody
+    public ResponseEntity<?> updatePwdPost(@RequestBody LoginDTO loginDTO,
+                                           HttpServletRequest req,
+                                           HttpServletResponse response,Model model) {
+        HttpSession session = req.getSession(false);
+        loginDTO.setUser_id((String)session.getAttribute("user_id"));
+
+
+        MemberDTO LoginMemberDTO = loginServiceIf.login_info(loginDTO);
+        String prior_pwd = LoginMemberDTO.getPwd();
+
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", false);
+        resp.put("prior_db_pwd",prior_pwd);
+
+        return ResponseEntity.ok().body(resp);
+
+    }
+
+    @PostMapping("/pwdUpdate")
+    public String pwdUpdate(LoginDTO loginDTO,
+                          HttpServletRequest req,
+                          HttpServletResponse response,Model model) {
+
+        loginDTO.setPwd(loginDTO.getNew_pwd());
+        loginServiceIf.update_pwd(loginDTO.getUser_id(),loginDTO.getPwd());
+
+        return "redirect:/";
 
 
     }
+
+ /*   @GetMapping("/pastpwd")
+    @ResponseBody
+    public ResponseEntity<?> pastpwdGET( @RequestBody LoginDTO loginDTO,
+                            HttpServletRequest req,
+                            HttpServletResponse response,Model model){
+
+
+
+
+    }*/
 
 }

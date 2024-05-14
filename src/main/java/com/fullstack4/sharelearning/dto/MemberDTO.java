@@ -21,5 +21,6 @@ public class MemberDTO {
     private int login_fail;
     private LocalDate last_date;
     private String state;
+    private String tmp_state;
 
 }
