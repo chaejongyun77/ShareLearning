@@ -17,14 +17,28 @@
             margin: 0 auto;
             width: 100%;
             font-size:22px;
+            border-bottom : 1px solid #C58917;
 
+
+        }
+        .btn.btn-outline-primary.me-2{
+            color : white; !important;
+            border: 1px solid white;
+
+        }
+        .nav-link.px-2{
+            color : white; !important;
+        }
+       #nav{
+            background: #C58917;
+           border-radius: 8px;
         }
     </style>
 </head>
 <body>
 <div class="navbar-container"> <!-- 컨테이너 추가 -->
 
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+    <header id="nav" class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <div class="col-md-3 mb-2 mb-md-0">
             <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
                 <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
@@ -33,7 +47,7 @@
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
 
-            <li><a href="#" class="nav-link px-2">마이페이지</a></li>
+            <li><a href="#" class="nav-link px-2" >마이페이지</a></li>
             <li><a href="#" class="nav-link px-2">오늘의 학습</a></li>
             <li><a href="#" class="nav-link px-2">나의 학습</a></li>
             <li><a href="#" class="nav-link px-2">공유학습</a></li>

@@ -23,4 +23,11 @@ public class MemberDTO {
     private String state;
     private String tmp_state;
 
+    private String number1;
+    private String number2;
+    private String number3;
+    private String email1;
+    private String email2;
+
+
 }

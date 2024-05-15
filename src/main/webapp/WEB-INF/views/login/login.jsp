@@ -55,6 +55,7 @@
 
 
 </div>
+<%@ include file="../common/footer.jsp"%>
 <script>
 
     var inputField = document.getElementById('user_id');
