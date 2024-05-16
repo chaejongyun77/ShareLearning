@@ -1,8 +1,10 @@
 package com.fullstack4.sharelearning.domain;
 
+import com.fullstack4.sharelearning.dto.StudyUserDTO;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @ToString
 @Getter
@@ -22,4 +24,11 @@ public class StudyVO {
     private String status;
     private LocalDate exposure_start;
     private LocalDate exposure_end;
+
+    // 공유한 사람들의 정보를 담는 리스트를 추가
+    private List<StudyUserDTO> sharedUsers;
+
+    //게시글 등록할 때 공유한 사람들 목록
+    private String[] share_person;
+
 }

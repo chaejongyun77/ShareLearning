@@ -4,6 +4,7 @@ import com.fullstack4.sharelearning.domain.MemberVO;
 import com.fullstack4.sharelearning.domain.StudyUserVO;
 import com.fullstack4.sharelearning.domain.StudyVO;
 import com.fullstack4.sharelearning.dto.PageRequestDTO;
+import com.fullstack4.sharelearning.dto.StudyDTO;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDate;
@@ -22,5 +23,23 @@ public interface StudyMapper {
     int bbsTotalCount(PageRequestDTO pageRequestDTO);
 
     List<StudyVO> bbsListByPage(PageRequestDTO pageRequestDTO);
+
+    int regist(StudyVO studyVO);
+    int lastindex();
+
+    int share_regist(@Param("study_idx")int study_idx,@Param("user_id")String user_id,@Param("shared_by_user_id") String shared_by_user_id);
+
+    StudyVO view(int no);
+
+    //내가 공유한 학습 페이지
+    List<StudyVO> shareListByPage(PageRequestDTO pageRequestDTO);
+
+    int shareTotalCount(String user_id);
+
+    //내가 공유한 학습 -> 공유사람들
+    List<StudyUserVO> shareList(@Param("study_idx")int study_idx,@Param("user_id")String user_id);
+
+
+
 
 }

@@ -43,7 +43,7 @@
 
         <div class="carousel-inner">
             <div class="carousel-item">
-                <img src="/resources/img/study1.png" alt="First slide" style="width:100%; height:550px; object-fit: cover;">
+                <img src="/resources/img/study1.png" alt="First slide" style="width:100%; height:450px; object-fit: cover;">
                 <div class="container">
                     <div class="carousel-caption text-start">
 
@@ -51,14 +51,14 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="/resources/img/study2.png" alt="First slide" style="width:100%; height:550px; object-fit: cover;">                <div class="container">
+                <img src="/resources/img/study2.png" alt="First slide" style="width:100%; height:450px; object-fit: cover;">                <div class="container">
                     <div class="carousel-caption">
 
                     </div>
                 </div>
             </div>
             <div class="carousel-item active">
-                <img src="/resources/img/study3.png" alt="First slide" style="width:100%; height:550px; object-fit: cover;">                <div class="container">
+                <img src="/resources/img/study3.png" alt="First slide" style="width:100%; height:450px; object-fit: cover;">                <div class="container">
                     <div class="carousel-caption text-end">
 
                     </div>

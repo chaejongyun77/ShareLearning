@@ -50,6 +50,67 @@ public class StudyServiceImpl implements StudyServiceIf{
         return responseDTO;
     }
 
+    @Override
+    public int regist(StudyDTO studyDTO) {
+
+
+        int result3= 0;
+
+        //학습테이블 등록
+        StudyVO studyVO = modelMapper.map(studyDTO, StudyVO.class);
+        int result = studyMapper.regist(studyVO);
+
+        //공유자 테이블 등록
+        result3= studyMapper.lastindex();
+        studyDTO.setNo(result3);
+        String[] shareArray = studyDTO.getShare_person();
+
+
+
+        for(int i =0; i<shareArray.length; i++){
+            int result2 = studyMapper.share_regist(result3,studyDTO.getUser_id(),shareArray[i]);
+
+        }
+
+        return result;
+    }
+
+    @Override
+    public StudyDTO view(int no) {
+        StudyVO studyVO = studyMapper.view(no);
+
+        List<StudyUserDTO> sharedUsers = studyMapper.findSharedUsers(no).stream().map(userVO -> modelMapper.map(userVO, StudyUserDTO.class)).collect(Collectors.toList());
+        StudyDTO studyDTO = modelMapper.map(studyVO,StudyDTO.class);
+        String[] sharePersonArray = sharedUsers.stream()
+                .map(StudyUserDTO::getShared_by_user_id) // 또는 다른 필드명으로 변경
+                .toArray(String[]::new);
+
+        studyDTO.setShare_person(sharePersonArray);
+        return studyDTO;
+    }
+
+    @Override
+    public PageResponseDTO<StudyDTO> shareListByPage(PageRequestDTO pageRequestDTO,String user_id) {
+        List<StudyVO> voList = studyMapper.shareListByPage(pageRequestDTO);
+        /*String[] shareList = studyMapper.shareList()*/
+        List<StudyDTO> dtoList = voList.stream()
+                .map(vo -> modelMapper.map(vo, StudyDTO.class))
+                .collect(Collectors.toList());
+        int total_count = studyMapper.shareTotalCount(user_id);
+        System.out.println("share total_count : " + total_count);
+
+        PageResponseDTO<StudyDTO> responseDTO = PageResponseDTO.<StudyDTO>withAll()
+                .requestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total_count(total_count)
+                .build();
+
+
+
+        System.out.println("comple response " + responseDTO);
+        return responseDTO;
+    }
+
 
 
 /*    @Override

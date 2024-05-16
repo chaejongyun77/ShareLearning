@@ -158,7 +158,11 @@
     submit_button.addEventListener("click",function (e){
        e.preventDefault();
 
-       document.frmRegist.submit();
+       const confirm_msg="정말로 등록하시겠습니까?"
+        if(confirm(confirm_msg)){
+            document.frmRegist.submit();
+        }
+
 
     });
 

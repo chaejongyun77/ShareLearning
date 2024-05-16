@@ -7,6 +7,7 @@
    <!-- 페이징 -->
     <sql id="whereCondition">
         <where>
+
             <if test="search_type !=null and search_type !=''">
                 <foreach collection="search_type" item="type" separator=" OR ">
                     <if test="type=='t'.toString()">
@@ -27,9 +28,11 @@
                     ADDDATE(#{search_date2},1) >= reg_date
                 </trim>
             </if>
-            and 1=1
+
         </where>
     </sql>
+
+
 
     <select id="study_info" resultType="com.fullstack4.sharelearning.domain.StudyVO">
         select *
@@ -59,6 +62,51 @@
         LIMIT #{page_skip_count}, #{page_size}
     </select>
 
+    <insert id="regist">
+        insert into tbl_study(title,content,field,tag,user_id,img,status,exposure_start,exposure_end)
+        values(#{title},#{content},#{field},#{tag},#{user_id},#{img},#{status},#{exposure_start},#{exposure_end})
+
+    </insert>
+
+    <select id="lastindex">
+        SELECT LAST_INSERT_ID(no) FROM tbl_study order by no desc LIMIT 1
+    </select>
+
+    <insert id="share_regist">
+
+        insert into tbl_study_user(study_idx,user_id,shared_by_user_id)
+        values(#{study_idx},#{user_id},#{shared_by_user_id})
+
+    </insert>
+
+    <select id="view">
+        select *
+        from tbl_study
+        where no =#{no}
+    </select>
+
+    <select id="shareListByPage" resultType="com.fullstack4.sharelearning.domain.StudyVO">
+        SELECT *
+        FROM tbl_study
+        where user_id=#{user_id}
+
+        <include refid="whereCondition"></include>
+        ORDER BY no desc
+        LIMIT #{page_skip_count}, #{page_size}
+    </select>
+
+    <select id="shareTotalCount" resultType="int">
+        SELECT COUNT(*) FROM tbl_study
+        where user_id=#{user_id}
+    </select>
+
+    <select id="shareList" resultType="com.fullstack4.sharelearning.domain.StudyUserVO">
+        select shared_by_user_id
+        from tbl_study_user
+        where user_id=#{user_id}
+        and study_idx= ${study_idx}
+
+    </select>
 
 
 

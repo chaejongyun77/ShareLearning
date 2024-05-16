@@ -82,6 +82,7 @@ public class StudyController {
         PageResponseDTO<StudyDTO> responseDTO =studyService.bbsListByPage(pageRequestDTO);
 
 
+
         model.addAttribute("responseDTO", responseDTO);
     }
 
@@ -94,26 +95,28 @@ public class StudyController {
         List<MemberDTO> list = memberService.member_info(user_id);
 
         model.addAttribute("member",list);
-
-
     }
 
     @PostMapping("/regist")
-    public void registPOST(StudyDTO studyDTO,MultipartHttpServletRequest files){
+    public String registPOST(StudyDTO studyDTO,MultipartHttpServletRequest files){
 
         List<String> filenames = null;
-        String realPath = servletContext.getRealPath("/resources/upload");
+        /*String realPath = servletContext.getRealPath("/resources/upload");*/
+        String realPath ="D:\\java4\\sharelearn\\src\\main\\webapp\\resources\\upload";
+        System.out.println("realPath" + realPath);
 
     /*    String saveDirectory = "/resources/upload";*/
         /*String saveDirectory = "D:\\java\\Learning\\ShareLearning\\src\\main\\webapp\\resources\\upload";*/
        filenames = commonFileUtil.fileuploads(files,realPath);
-        System.out.println("studyDTO img : " + filenames.get(0));
+
        studyDTO.setImg(filenames.get(0));
-        System.out.println("registPost : " + studyDTO.toString());
-        for(String i : studyDTO.getShare_person()){
-            System.out.println("share person: " + i);
-        }
-        
+
+
+        int result = studyService.regist(studyDTO);
+
+
+
+
      /*   int result = bbsServiceIf.regist(bbsDTO);
         log.info("test result : "+result);
         if(result > 0 ){
@@ -124,6 +127,38 @@ public class StudyController {
                     int file_result = bbsFileServiceIf.regist(bbsFileDTO);
                 }
             }*/
+
+
+
+        return "redirect:/study/mystudy";
+    }
+
+    @GetMapping("/view")
+    public void detailGET(HttpServletRequest req,Model model,@RequestParam("no")int no){
+    /*    String realPath = "D:\\java4\\sharelearn\\src\\main\\webapp\\resources\\upload";*/
+        StudyDTO studyDTO = studyService.view(no);
+/*        studyDTO.setImg(realPath+"\\" + studyDTO.getImg());*/
+
+        System.out.println("studyDTO img : " + studyDTO.getImg());
+        System.out.println("view stduyDTO : " + studyDTO);
+
+        model.addAttribute("studyDTO",studyDTO);
+
+    }
+
+    @GetMapping("/share")
+    public void shareGET(HttpServletRequest req,
+                         Model model, PageRequestDTO
+                                     pageRequestDTO){
+
+        HttpSession session = req.getSession();
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        String user_id = memberDTO.getUser_id();
+        pageRequestDTO.setUser_id(user_id);
+
+        PageResponseDTO<StudyDTO> responseDTO =studyService.shareListByPage(pageRequestDTO,user_id);
+
+        model.addAttribute("responseDTO",responseDTO);
 
 
 

@@ -15,4 +15,13 @@ public interface StudyServiceIf {
 
     PageResponseDTO<StudyDTO> bbsListByPage(PageRequestDTO pageRequestDTO);
 
+    int regist(StudyDTO studyDTO);
+
+    StudyDTO view(int no);
+
+
+    //내가 공유한 학습 페이지
+    PageResponseDTO<StudyDTO>  shareListByPage(PageRequestDTO pageRequestDTO,String user_id);
+
+
 }
