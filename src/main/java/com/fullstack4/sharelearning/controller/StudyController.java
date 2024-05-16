@@ -79,6 +79,9 @@ public class StudyController {
     public void mystudyGET(HttpServletRequest req,
                            Model model, PageRequestDTO
                                        pageRequestDTO){
+        HttpSession session = req.getSession(false);
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+
         PageResponseDTO<StudyDTO> responseDTO =studyService.bbsListByPage(pageRequestDTO);
 
 
@@ -101,17 +104,19 @@ public class StudyController {
     public String registPOST(StudyDTO studyDTO,MultipartHttpServletRequest files){
 
         List<String> filenames = null;
-        /*String realPath = servletContext.getRealPath("/resources/upload");*/
-        String realPath ="D:\\java4\\sharelearn\\src\\main\\webapp\\resources\\upload";
+        String realPath = servletContext.getRealPath("/resources/upload");
+       /* String realPath ="D:\\java4\\sharelearn\\src\\main\\webapp\\resources\\upload";*/ // 강의실에선 이 경로로 변경
+     /*   String realPath =" D:\\java\\Learning\\ShareLearning\\src\\main\\webapp\\resources\\upload";*/
+
         System.out.println("realPath" + realPath);
 
     /*    String saveDirectory = "/resources/upload";*/
         /*String saveDirectory = "D:\\java\\Learning\\ShareLearning\\src\\main\\webapp\\resources\\upload";*/
        filenames = commonFileUtil.fileuploads(files,realPath);
-
+        System.out.println("filenames"+filenames);
        studyDTO.setImg(filenames.get(0));
 
-
+        System.out.println("파일 등록 이 안된거임");
         int result = studyService.regist(studyDTO);
 
 
@@ -157,6 +162,30 @@ public class StudyController {
         pageRequestDTO.setUser_id(user_id);
 
         PageResponseDTO<StudyDTO> responseDTO =studyService.shareListByPage(pageRequestDTO,user_id);
+
+        List<StudyDTO> dtoList = responseDTO.getDtoList();
+        model.addAttribute("dtoList", dtoList);
+
+
+        model.addAttribute("responseDTO",responseDTO);
+     /*   List<StudyDTO> dto = responseDTO.getDtoList();
+        model.addAttribute("dto",dto);*/
+
+
+
+    }
+
+    @GetMapping("/shared")
+    public void sharedGET(HttpServletRequest req,
+                         Model model, PageRequestDTO
+                                 pageRequestDTO){
+
+        HttpSession session = req.getSession();
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        String user_id = memberDTO.getUser_id();
+        pageRequestDTO.setUser_id(user_id);
+
+        PageResponseDTO<StudyDTO> responseDTO =studyService.sharedListByPage(pageRequestDTO,user_id);
 
         model.addAttribute("responseDTO",responseDTO);
 

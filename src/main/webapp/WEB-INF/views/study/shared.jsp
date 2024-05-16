@@ -1,6 +1,5 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" trimDirectiveWhitespaces="true" pageEncoding="UTF-8" %>
-
 <html>
 <head>
     <title>Title</title>
@@ -9,13 +8,16 @@
 <style>
     .main-content{
         padding-top: 120px;
+
     }
+
+
 </style>
 <body>
 <%@ include file="../common/header.jsp"%>
 <main class="main-content">
     <div>
-        <form name="frmSearch" id="search" action="/study/mystudy">
+        <form name="frmSearch" id="search" action="/study/shared">
             <div class="input-group mb-1">
                 <span class="input-group-text ">검색범위</span>
                 <div class="input-group-text">
@@ -40,16 +42,20 @@
             </div>
         </form>
     </div>
+    <div class="d-flex">
+        <button class="btn btn-outline-primary" type="button" onclick="location.href='/study/share'"  >내가 한 공유</button> &nbsp;
+        <button class="btn btn-outline-primary" type="button" onclick="location.href='/study/shared'">내가 받은 공유</button>
+    </div>
+    <br>
     <table class="table">
         <thead>
         <tr class="table-secondary">
             <%--<th scope="col"></th>--%>
             <th scope="col">No</th>
             <th scope="col">제목</th>
+            <th scope="col">공유자</th>
             <th scope="col">등록일</th>
-            <th scope="col">좋아요</th>
-            <th scope="col">오늘의 학습<br> 노출여부 </th>
-            <th scope="col">오늘의 학습<br> 노출기간</th>
+
 
         </tr>
         </thead>
@@ -59,16 +65,13 @@
             <c:forEach var="list" items="${responseDTO.dtoList}" varStatus="status">
                 <tbody >
                 <tr>
-                   <%-- <input type="hidden" name="payment_idx" value="${list.payment_idx}"/>
-                    <input type="hidden" name="book_idx" value="${list.book_idx}"/>
-                    <input type="hidden" name="product_quantity" value="${list.product_quantity}"/>--%>
-                    <td> <a href="/study/view?no=${list.no}">  ${list.no} </a></td><%--${(status.count) + (10*(responseDTO.page-1))}--%>
-                    <td>${list.title} </td> <%--<a href="/admin/apayment/view?payment_idx=${list.payment_idx}&book_idx=${list.book_idx}">${list.product_name} </a>--%>
-                    <td>${list.reg_date}</td>
 
-                    <td>${list.like } ${responseDTO.page_block_start+1}</td>
-                    <td> ${list.status}</td>
-                    <td>${list.exposure_start} ~ ${list.exposure_end} </td>
+                    <td> ${list.no} </a></td>
+                    <td>${list.title} </td>
+                    <td>
+                        ${list.user_id}
+                    </td>
+                    <td>${list.reg_date} </td>
 
                 </tr>
                 </tbody>
@@ -101,12 +104,9 @@
         </ul>
     </nav>
 
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-1">
-        <button class="btn btn-outline-primary" type="button" onclick="location.href='/study/regist'">학습등록</button>
-    </div>
 
 </main>
-
 <%@ include file="../common/footer.jsp"%>
+
 </body>
 </html>

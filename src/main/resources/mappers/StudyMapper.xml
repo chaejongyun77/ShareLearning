@@ -32,6 +32,50 @@
         </where>
     </sql>
 
+    <sql id="whereCondition1">
+        <if test="search_type !=null and search_type !=''">
+            <foreach collection="search_type" item="type" separator=" OR ">
+                <if test="type=='t'.toString()">
+                    AND title like concat('%', #{search_word},'%')
+                </if>
+                <!--<if test="type=='u'.toString()">
+                    AND user_id like concat('%', #{search_word},'%')
+                </if>-->
+            </foreach>
+        </if>
+        <if test="search_date1 !=null and search_date1 !='' ">
+            AND reg_date >= #{search_date1}
+        </if>
+        <if test="search_date2 !=null and search_date2 !='' ">
+            AND ADDDATE(#{search_date2},1) >= reg_date
+        </if>
+    </sql>
+
+    <sql id="whereConditionn">
+
+            <if test="pageRequestDTO.search_type !=null and pageRequestDTO.search_type !=''">
+                <foreach collection="pageRequestDTO.search_type" item="type" separator=" OR ">
+                    <if test="type=='t'.toString()">
+                       AND title like concat('%', #{pageRequestDTO.search_word},'%')
+                    </if>
+                    <!--<if test="type=='u'.toString()">
+                        user_id like concat('%', #{pageRequestDTO.search_word},'%')
+                    </if>-->
+                </foreach>
+            </if>
+            <if test="pageRequestDTO.search_date1 !=null and pageRequestDTO.search_date1 !='' ">
+                <trim prefix=" and ">
+                    reg_date >= #{pageRequestDTO.search_date1}
+                </trim>
+            </if>
+            <if test="pageRequestDTO.search_date2 !=null and pageRequestDTO.search_date2 !='' ">
+                <trim prefix=" and ">
+                    ADDDATE(#{pageRequestDTO.search_date2},1) >= reg_date
+                </trim>
+            </if>
+
+    </sql>
+
 
 
     <select id="study_info" resultType="com.fullstack4.sharelearning.domain.StudyVO">
@@ -40,6 +84,7 @@
         where user_id=#{user_id}
         <!--오늘의 학습만 -->
         and DATE(reg_date) = CURDATE()
+        and status='Y'
     <!--    and DATE(reg_date) = #{reg_date}-->
     </select>
 
@@ -90,7 +135,7 @@
         FROM tbl_study
         where user_id=#{user_id}
 
-        <include refid="whereCondition"></include>
+        <include refid="whereCondition1"></include>
         ORDER BY no desc
         LIMIT #{page_skip_count}, #{page_size}
     </select>
@@ -100,13 +145,41 @@
         where user_id=#{user_id}
     </select>
 
-    <select id="shareList" resultType="com.fullstack4.sharelearning.domain.StudyUserVO">
+    <select id="shareList"  resultType="string">
         select shared_by_user_id
         from tbl_study_user
         where user_id=#{user_id}
         and study_idx= ${study_idx}
 
     </select>
+
+
+    <!-- 내가 공유 받은 학습 -->
+    <select id="share_tome" resultType="com.fullstack4.sharelearning.domain.StudyUserVO">
+        SELECT *
+        FROM tbl_study_user
+        WHERE shared_by_user_id = #{user_id}
+
+    </select>
+
+    <select id="sharedListByPage" resultType="com.fullstack4.sharelearning.domain.StudyVO">
+        SELECT A.no, A.title,A.content,A.field,A.tag,A.user_id,A.like,A.reg_date,A.img,A.status,A.exposure_start,A.exposure_end
+        FROM tbl_study as A
+        INNER JOIN tbl_study_user B ON A.no = B.study_idx
+        WHERE B.shared_by_user_id = #{user_id}
+        <include refid="whereConditionn"></include>
+        ORDER BY A.no desc
+        LIMIT #{pageRequestDTO.page_skip_count}, #{pageRequestDTO.page_size}
+    </select>
+
+
+    <select id="getSharedStudyTotalCount" resultType="int">
+        SELECT COUNT(*)
+        FROM tbl_study AS A
+        INNER JOIN tbl_study_user B ON A.no = B.study_idx
+        where B.shared_by_user_id=#{user_id}
+    </select>
+
 
 
 

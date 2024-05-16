@@ -26,21 +26,21 @@
 
             <div class="col-sm-6">
                 <label for="name" class="form-label">이름 </label>
-                <input type="text" class="form-control" id="name" name="name" value="${sessionScope.memberDTO.name}" readonly>
+                <input type="text" class="form-control" id="name" name="name" value="${sessionScope.memberDTO.name}" readonly >
 
             </div>
 
             <div class="col-12">
                 <label for="pwd" class="form-label">패스워드</label>
                 <div class="input-group has-validation">
-                    <input type="text" class="form-control" id="pwd" name="pwd" >
+                    <input type="password" class="form-control" id="pwd" name="pwd" maxlength="20" >
 
                 </div>
             </div>
 
             <div class="col-12">
                 <label for="confirm_pwd" class="form-label">패스워드 확인</label>
-                <input type="email" class="form-control" id="confirm_pwd" >
+                <input type="password" class="form-control" id="confirm_pwd" maxlength="20" >
 
             </div>
 
@@ -58,19 +58,19 @@
 
             <div class="col-md-4">
                 <label for="number2" class="form-label">&nbsp; </label>
-                <input type="email" class="form-control" name="number2" id="number2" value="${fn:substring(sessionScope.memberDTO.phoneNumber, 3, 7)}" >
+                <input type="text" class="form-control" name="number2" id="number2" value="${fn:substring(sessionScope.memberDTO.phoneNumber, 3, 7)}" maxlength="4" >
 
             </div>
 
             <div class="col-md-4">
                 <label for="number3" class="form-label">&nbsp;</label>
-                <input type="text" class="form-control" name="number3" id="number3" value="${fn:substring(sessionScope.memberDTO.phoneNumber, 7, 11)}">
+                <input type="text" class="form-control" name="number3" id="number3" value="${fn:substring(sessionScope.memberDTO.phoneNumber, 7, 11)}" maxlength="4">
 
             </div>
 
             <div class="col-md-6">
                 <label for="email1" class="form-label">이메일 </label>
-                <input type="text" class="form-control" id="email1" name="email1" value="${fn:substring(sessionScope.memberDTO.email, 0, fn:indexOf(sessionScope.memberDTO.email, '@'))}">
+                <input type="text" class="form-control" id="email1" name="email1" value="${fn:substring(sessionScope.memberDTO.email, 0, fn:indexOf(sessionScope.memberDTO.email, '@'))}" maxlength="15">
             </div>
             <div class="col-md-6">
                 <label for="email2" class="form-label">&nbsp; </label>
@@ -90,7 +90,7 @@
 
         <div style="text-align: center">
         <button class="w-40 btn btn-primary btn-lg" type="button" id="modify_button">수정</button>
-        <button class="w-40 btn btn-primary btn-lg" type="submit">취소</button>
+        <button class="w-40 btn btn-primary btn-lg" type="button" onclick="location.href='/'">취소</button>
         </div>
     </form>
 

@@ -117,13 +117,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="delivery_frm" name="delivery_frm" method="post" action="/admin/ainstock/regist">
+
                     <div class="mb-3">
                     <c:forEach items="${member}" var="list" varStatus="status" >
                        <h5> <input type="checkbox" class="shard_user" id="shared_user${status.count}" name="shard_user" value="${list.user_id}" > ${list.user_id}<br></h5>
                     </c:forEach>
                     </div>
-                </form>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_regist">취소</button>

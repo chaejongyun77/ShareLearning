@@ -44,13 +44,16 @@
                 <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
             </a>
         </div>
+        <a class="navbar-brand" href="#">
+           <img src="/resources/img/s.png" alt="" width="35" height="35" onclick="location.href='/'">
+        </a>
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
 
-            <li><a href="#" class="nav-link px-2" >마이페이지</a></li>
-            <li><a href="#" class="nav-link px-2">오늘의 학습</a></li>
-            <li><a href="#" class="nav-link px-2">나의 학습</a></li>
-            <li><a href="#" class="nav-link px-2">공유학습</a></li>
+            <li><a href="/member/mypage" class="nav-link px-2" >마이페이지</a></li>
+            <li><a href="/study/today" class="nav-link px-2">오늘의 학습</a></li>
+            <li><a href="/study/mystudy" class="nav-link px-2">나의 학습</a></li>
+            <li><a href="/study/share" class="nav-link px-2">공유학습</a></li>
         </ul>
 
         <div class="col-md-3 text-end">

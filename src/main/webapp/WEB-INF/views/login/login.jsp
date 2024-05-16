@@ -35,7 +35,7 @@
         </div>
         <br>
         <div class="form-floating">
-            <input type="text" class="form-control" id="pwd" name="pwd" >
+            <input type="password" class="form-control" id="pwd" name="pwd" >
             <label for="pwd">패스워드</label>
         </div>
 

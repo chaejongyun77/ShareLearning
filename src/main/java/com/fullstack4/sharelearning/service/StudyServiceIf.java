@@ -24,4 +24,6 @@ public interface StudyServiceIf {
     PageResponseDTO<StudyDTO>  shareListByPage(PageRequestDTO pageRequestDTO,String user_id);
 
 
+    //내가 공유받은 학습 페이지
+    PageResponseDTO<StudyDTO> sharedListByPage(PageRequestDTO pageRequestDTO, String userId);
 }

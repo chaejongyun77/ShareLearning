@@ -58,10 +58,10 @@
                         <fieldset>
                             <legend style="font-size: 16px;">오늘의 학습 노출 여부</legend>
                             <label>
-                                노출 <input type="radio" name="status" value="Y" checked />
+                                노출 <input type="radio" name="status" value="Y" checked disabled  />
                             </label>
                             <label>
-                                노출안함 <input type="radio" name="status" value="N" />
+                                노출안함 <input type="radio" name="status" value="N" disabled />
                             </label>
                         </fieldset>
 
@@ -99,7 +99,7 @@
                 <div class="d-flex">
                     <div class="flex-grow-1 me-2">
                         <label for="field" class="form-label" >분야</label>
-                        <input type="text" class="form-control" name="field" id="field" value="${studyDTO.field}">
+                        <input type="text" class="form-control" name="field" id="field" value="${studyDTO.field}" readonly>
                     </div>
 
                     <div class="flex-grow-1">

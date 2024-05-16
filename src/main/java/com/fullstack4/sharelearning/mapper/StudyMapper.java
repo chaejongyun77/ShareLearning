@@ -37,8 +37,14 @@ public interface StudyMapper {
     int shareTotalCount(String user_id);
 
     //내가 공유한 학습 -> 공유사람들
-    List<StudyUserVO> shareList(@Param("study_idx")int study_idx,@Param("user_id")String user_id);
+    String[] shareList(@Param("study_idx")int study_idx,@Param("user_id")String user_id);
 
+
+
+    //내가 공유 받은 학습
+    List<StudyVO> sharedListByPage(@Param("pageRequestDTO")PageRequestDTO pageRequestDTO,@Param("user_id") String user_id);
+
+    int getSharedStudyTotalCount(String user_id);
 
 
 

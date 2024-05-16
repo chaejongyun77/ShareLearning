@@ -25,7 +25,7 @@
         <div class="col-lg-6 mx-auto">
             <p class="lead mb-4">가장 많은것을 알고 있는 사람이 <br> 인생에서 가장 크게 성공한다</p>
             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                <button type="button" class="btn btn-primary btn-lg px-4 gap-3"> 학습하러 가기</button>
+                <button type="button" class="btn btn-primary btn-lg px-4 gap-3" onclick="location.href='/study/mystudy'"> 학습하러 가기</button>
 
             </div>
         </div>

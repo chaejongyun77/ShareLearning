@@ -24,6 +24,17 @@
         <servlet-name>appServlet</servlet-name>
     </filter-mapping>
 
+
+    <filter>
+        <filter-name>login</filter-name>
+        <filter-class>com.fullstack4.sharelearning.filter.LoginCheckFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>login</filter-name>
+        <url-pattern>/member/*</url-pattern>
+        <url-pattern>/study/*</url-pattern>
+    </filter-mapping>
+
     <servlet>
         <servlet-name>appServlet</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

@@ -44,13 +44,13 @@
                     <div class="team-member d-flex align-items-start">
                         <div class="pic"><img src="/resources/img/${list.img}" class="img-fluid" alt=""  style="height: 200px !important; width: 200px !important;"></div>
                         <div class="member-info">
-                            <h4>${list.title}</h4>
+                            <h4> <a href="/study/view?no=${list.no}">${list.title}</a></h4>
                             <span>${list.field} &nbsp; #${list.tag}</span>
                             <p>${list.content}</p>
                             <br><br>
                             <div class="social">
-                                <c:forEach items="${list.sharedUsers}" var="user">
-                                    <a href="" style="width: 60px !important;">${user.shared_by_user_id}</a>
+                                                               <c:forEach items="${list.sharedUsers}" var="user">
+                                    <a href="" style="width: 60px !important;  text-decoration: none;">${user.shared_by_user_id}</a>
                                 </c:forEach>
 
                             </div>

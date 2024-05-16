@@ -31,4 +31,5 @@ public class StudyVO {
     //게시글 등록할 때 공유한 사람들 목록
     private String[] share_person;
 
+
 }

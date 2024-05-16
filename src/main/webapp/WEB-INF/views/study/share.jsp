@@ -17,7 +17,7 @@
 <%@ include file="../common/header.jsp"%>
 <main class="main-content">
     <div>
-        <form name="frmSearch" id="search" action="/study/mystudy">
+        <form name="frmSearch" id="search" action="/study/share">
             <div class="input-group mb-1">
                 <span class="input-group-text ">검색범위</span>
                 <div class="input-group-text">
@@ -43,8 +43,8 @@
         </form>
     </div>
     <div class="d-flex">
-        <button class="btn btn-outline-primary" type="submit" >내가 한 공유</button> &nbsp;
-        <button class="btn btn-outline-primary" type="button" >내가 받은 공유</button>
+        <button class="btn btn-outline-primary" type="button" onclick="location.href='/study/share'"  >내가 한 공유</button> &nbsp;
+        <button class="btn btn-outline-primary" type="button" onclick="location.href='/study/shared'">내가 받은 공유</button>
     </div>
     <br>
     <table class="table">
@@ -62,13 +62,18 @@
 
         <form action="/study/today" method="post" id="frm" name="frm">
 
-            <c:forEach var="list" items="${responseDTO.dtoList}" varStatus="status">
+            <c:forEach var="list" items="${dtoList}" varStatus="status">
                 <tbody >
                 <tr>
 
                     <td> ${list.no} </a></td>
                     <td>${list.title} </td>
-                    <td>공유자 </td>
+                    <td>
+                        <c:forEach var="person" items="${list.share_person}">
+                            <c:out value="${person}"/>&nbsp;
+
+                        </c:forEach>
+                    </td>
                     <td>${list.reg_date} </td>
 
                 </tr>

@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,12 +93,37 @@ public class StudyServiceImpl implements StudyServiceIf{
     @Override
     public PageResponseDTO<StudyDTO> shareListByPage(PageRequestDTO pageRequestDTO,String user_id) {
         List<StudyVO> voList = studyMapper.shareListByPage(pageRequestDTO);
-        /*String[] shareList = studyMapper.shareList()*/
-        List<StudyDTO> dtoList = voList.stream()
-                .map(vo -> modelMapper.map(vo, StudyDTO.class))
-                .collect(Collectors.toList());
+
+
+        List<StudyDTO> dtoList = new ArrayList<>();
+        for (StudyVO vo : voList) {
+            String[] shareList = studyMapper.shareList (vo.getNo(),user_id);
+            System.out.println("shareList " + shareList);
+            StudyDTO dto = modelMapper.map(vo, StudyDTO.class);
+            dto.setShare_person(shareList);
+            dtoList.add(dto);
+        }
+
         int total_count = studyMapper.shareTotalCount(user_id);
-        System.out.println("share total_count : " + total_count);
+
+        PageResponseDTO<StudyDTO> responseDTO = PageResponseDTO.<StudyDTO>withAll()
+                .requestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total_count(total_count)
+                .build();
+        return responseDTO;
+    }
+
+    @Override
+    public PageResponseDTO<StudyDTO> sharedListByPage(PageRequestDTO pageRequestDTO, String userId) {
+        List<StudyVO> voList = studyMapper.sharedListByPage(pageRequestDTO, userId);
+        List<StudyDTO> dtoList = new ArrayList<>();
+        for (StudyVO vo : voList) {
+            StudyDTO dto = modelMapper.map(vo, StudyDTO.class);
+            dtoList.add(dto);
+        }
+
+        int total_count = studyMapper.getSharedStudyTotalCount(userId);
 
         PageResponseDTO<StudyDTO> responseDTO = PageResponseDTO.<StudyDTO>withAll()
                 .requestDTO(pageRequestDTO)
@@ -105,29 +131,12 @@ public class StudyServiceImpl implements StudyServiceIf{
                 .total_count(total_count)
                 .build();
 
-
-
-        System.out.println("comple response " + responseDTO);
+        System.out.println("내가 공유 받은 학습 리스트 : " + responseDTO);
         return responseDTO;
+
+
+
     }
-
-
-
-/*    @Override
-    public List<StudyDTO> study_info(String user_id, LocalDate date) {
-        System.out.println("service user_id : " +user_id );
-        List<StudyDTO> bbsDTOList = studyMapper.study_info(user_id,date).stream().map(vo -> {
-            StudyDTO dto = modelMapper.map(vo, StudyDTO.class);
-            // 각 학습에 대한 공유 사용자 정보 가져오기
-            List<StudyUserDTO> sharedUsers = studyMapper.findSharedUsers(vo.getNo()).stream().map(userVO -> modelMapper.map(userVO, StudyUserDTO.class)).collect(Collectors.toList());
-            dto.setSharedUsers(sharedUsers); // StudyDTO에 공유 사용자 정보 설정
-            return dto;
-        }).collect(Collectors.toList());
-
-        return bbsDTOList;
-    }*/
-
-
 
 
 }

@@ -32,15 +32,20 @@ public class CommonFileUtil {
          /*   UUID uuid = UUID.randomUUID();
             String[] uuids = uuid.toString().split("-");
             String newName = uuids[0] + fileRealName;*/
+            System.out.println("파일 등록 에러 위치1");
+            System.out.println("uploadFolder"  + uploadFolder);
+            System.out.println("uploadFolder"  + fileRealName);
 
 
-            File saveFile = new File(uploadFolder + "\\" + fileRealName);
+            File saveFile = new File(uploadFolder + File.separator + fileRealName);
             try {
                 file.transferTo(saveFile);
                 filenames.add(fileRealName);
             } catch (IllegalStateException e) {
+                System.out.println("파일 등록 에러 위치2");
                 e.printStackTrace();
             } catch (Exception e) {
+                System.out.println("파일 등록 에러 위치3");
                 e.printStackTrace();
             }
         }
