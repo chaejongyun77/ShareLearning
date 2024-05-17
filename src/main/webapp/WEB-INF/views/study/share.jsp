@@ -1,5 +1,6 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" trimDirectiveWhitespaces="true" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html>
 <head>
     <title>Title</title>
@@ -64,19 +65,30 @@
 
             <c:forEach var="list" items="${dtoList}" varStatus="status">
                 <tbody >
+                <c:choose>
+                    <c:when test="${ fn:length(list.share_person) != 0}">
+
                 <tr>
 
-                    <td> ${list.no} </a></td>
+                    <td> <a href="/study/view?no=${list.no}"> ${list.no} </a></td>
                     <td>${list.title} </td>
                     <td>
+                    <c:if test="${list.share_person !=null}">
                         <c:forEach var="person" items="${list.share_person}">
-                            <c:out value="${person}"/>&nbsp;
-
+                            <c:out value="${person}"/>님<br>
                         </c:forEach>
+                    </c:if>
+
                     </td>
                     <td>${list.reg_date} </td>
 
                 </tr>
+                    </c:when>
+                    <c:otherwise>
+
+                    </c:otherwise>
+
+                </c:choose>
                 </tbody>
             </c:forEach>
 

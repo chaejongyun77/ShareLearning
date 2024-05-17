@@ -25,7 +25,7 @@
 <body>
 <%@ include file="../common/header.jsp"%>
 <main class="main-content">
-    <section id="team" class="team section">
+    <section id="team" class="team section" >
 
         <!-- Section Title -->
         <div class="container section-title aos-init aos-animate" data-aos="fade-up">
@@ -44,7 +44,7 @@
                     <div class="team-member d-flex align-items-start">
                         <div class="pic"><img src="/resources/img/${list.img}" class="img-fluid" alt=""  style="height: 200px !important; width: 200px !important;"></div>
                         <div class="member-info">
-                            <h4> <a href="/study/view?no=${list.no}">${list.title}</a></h4>
+                            <h4> <a href="/study/view?no=${list.no}" style="text-decoration: none;">${list.title}</a></h4>
                             <span>${list.field} &nbsp; #${list.tag}</span>
                             <p>${list.content}</p>
                             <br><br>

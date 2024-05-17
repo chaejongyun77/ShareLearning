@@ -138,5 +138,34 @@ public class StudyServiceImpl implements StudyServiceIf{
 
     }
 
+    @Override
+    public int modify(StudyDTO studyDTO) {
+
+
+        //학습테이블 수정
+        StudyVO studyVO = modelMapper.map(studyDTO, StudyVO.class);
+        int result = studyMapper.modify(studyVO);
+
+
+        String[] shareArray = studyDTO.getShare_person();
+
+        int result2 = studyMapper.delete_share(studyDTO.getNo());
+
+        for(int i =0; i<shareArray.length; i++){
+            int result4 = studyMapper.share_regist(studyDTO.getNo(),studyDTO.getUser_id(),shareArray[i]);
+
+        }
+
+
+        return result;
+    }
+
+    @Override
+    public int delete_study(int no) {
+        int result = studyMapper.delete_study(no);
+
+        return result;
+    }
+
 
 }

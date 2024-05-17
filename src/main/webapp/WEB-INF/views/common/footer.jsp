@@ -13,6 +13,7 @@
     position : absolute;
     bottom : 0;
     width: 1024px;
+    height:50px;
 }
 </style>
 <body>

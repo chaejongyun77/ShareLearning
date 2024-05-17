@@ -57,6 +57,11 @@
         </ul>
 
         <div class="col-md-3 text-end">
+            <c:if test="${sessionScope.memberDTO.user_id !=nill}">
+            <div class="btn btn-outline-primary me-2">
+                    ${sessionScope.memberDTO.user_id}님
+            </div>
+            </c:if>
             <c:choose>
             <c:when test="${sessionScope.memberDTO !=null}">
                 <button type="button" class="btn btn-outline-primary me-2" onclick="location.href='/login/logout'">로그아웃</button>

@@ -34,7 +34,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="content" class="form-label">학습내용</label>
-                    <textarea class="form-control" name="content" id="content" rows="8" cols="60" style="resize: none;" maxlength="400"></textarea>
+                    <textarea class="form-control" name="content" id="content" rows="5" cols="60" style="resize: none;" maxlength="400"></textarea>
 
                 </div>
                 <div class="mb-3">
@@ -158,6 +158,34 @@
     submit_button.addEventListener("click",function (e){
        e.preventDefault();
 
+        const title = document.querySelector("#title");
+        const content = document.querySelector("#content");
+        const tag = document.querySelector("#tag");
+        const field = document.querySelector("#field");
+
+        if(title.value.length ==0){
+            alert("제목을 입력해주세요.");
+
+            return false;
+        }
+        if(content.value.length ==0){
+            alert("내용을 입력해주세요.");
+
+            return false;
+        }
+        if(tag.value.length ==0){
+            alert("태그를 입력해주세요.");
+
+            return false;
+        }
+        if(field.value.length ==0){
+            alert("분야를 입력해주세요.");
+
+            return false;
+        }
+
+
+
        const confirm_msg="정말로 등록하시겠습니까?"
         if(confirm(confirm_msg)){
             document.frmRegist.submit();
@@ -165,6 +193,28 @@
 
 
     });
+
+    const radioButtons = document.querySelectorAll('input[name="status"]');
+    const exposureStart = document.getElementById('exposure_start');
+    const exposureEnd = document.getElementById('exposure_end');
+
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'Y') {
+                exposureStart.removeAttribute('readonly');
+                exposureEnd.removeAttribute('readonly');
+            } else if (this.value === 'N') {
+                exposureStart.setAttribute('readonly', 'readonly');
+                exposureEnd.setAttribute('readonly', 'readonly');
+            }
+        });
+    });
+
+    // 초기 상태 설정
+    if (document.querySelector('input[name="status"]:checked').value === 'N') {
+        exposureStart.setAttribute('readonly', 'readonly');
+        exposureEnd.setAttribute('readonly', 'readonly');
+    }
 
 
 </Script>

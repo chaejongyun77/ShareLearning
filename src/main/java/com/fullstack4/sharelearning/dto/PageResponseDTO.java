@@ -30,6 +30,7 @@ public class PageResponseDTO<E> {
     private String cate2;
     private String cate3;
     private String order;
+    private String user_id;
 
     //게시글 등록할 때 공유한 사람들 목록
     private String[] share_person;

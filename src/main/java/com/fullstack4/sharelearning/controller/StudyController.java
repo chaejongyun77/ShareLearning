@@ -81,6 +81,7 @@ public class StudyController {
                                        pageRequestDTO){
         HttpSession session = req.getSession(false);
         MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        pageRequestDTO.setUser_id(memberDTO.getUser_id());
 
         PageResponseDTO<StudyDTO> responseDTO =studyService.bbsListByPage(pageRequestDTO);
 
@@ -104,8 +105,8 @@ public class StudyController {
     public String registPOST(StudyDTO studyDTO,MultipartHttpServletRequest files){
 
         List<String> filenames = null;
-        String realPath = servletContext.getRealPath("/resources/upload");
-       /* String realPath ="D:\\java4\\sharelearn\\src\\main\\webapp\\resources\\upload";*/ // 강의실에선 이 경로로 변경
+       /* String realPath = servletContext.getRealPath("/resources/upload");*/
+        String realPath ="D:\\java4\\sharelearn\\src\\main\\webapp\\resources\\upload"; // 강의실에선 이 경로로 변경
      /*   String realPath =" D:\\java\\Learning\\ShareLearning\\src\\main\\webapp\\resources\\upload";*/
 
         System.out.println("realPath" + realPath);
@@ -192,4 +193,48 @@ public class StudyController {
 
 
     }
+    @GetMapping("/modify")
+    public void modifyGET(HttpServletRequest req,Model model,@RequestParam("no")int no){
+
+        HttpSession session = req.getSession();
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        String user_id = memberDTO.getUser_id();
+
+        List<MemberDTO> list = memberService.member_info(user_id);
+
+
+        StudyDTO studyDTO = studyService.view(no);
+        model.addAttribute("member",list);
+        model.addAttribute("studyDTO",studyDTO);
+
+    }
+
+    @PostMapping("/modify")
+    public String modifyPost(StudyDTO studyDTO){
+
+        int result = studyService.modify(studyDTO);
+
+        return "redirect:/study/view?no="+studyDTO.getNo();
+
+    }
+
+    @GetMapping("/delete")
+    public String deleteGET(HttpServletRequest req,Model model,@RequestParam("no")int no){
+
+        System.out.println("delete no : " + no);
+        HttpSession session = req.getSession();
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        String user_id = memberDTO.getUser_id();
+
+        int result = studyService.delete_study(no);
+        System.out.println("result delete" + no);
+
+
+        return "redirect:/study/mystudy";
+
+
+    }
+
+
+
 }

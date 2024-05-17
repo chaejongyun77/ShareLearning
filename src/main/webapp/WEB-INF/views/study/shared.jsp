@@ -66,10 +66,10 @@
                 <tbody >
                 <tr>
 
-                    <td> ${list.no} </a></td>
+                    <td> <a href="/study/view?no=${list.no}">${list.no} </a></td>
                     <td>${list.title} </td>
                     <td>
-                        ${list.user_id}
+                        ${list.user_id}님
                     </td>
                     <td>${list.reg_date} </td>
 

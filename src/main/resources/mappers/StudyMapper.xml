@@ -102,7 +102,9 @@
     <select id="bbsListByPage" resultType="com.fullstack4.sharelearning.domain.StudyVO">
         select *
         FROM tbl_study
-        <include refid="whereCondition"></include>
+        where user_id=#{user_id}
+
+        <include refid="whereCondition1"></include>
         ORDER BY no DESC
         LIMIT #{page_skip_count}, #{page_size}
     </select>
@@ -180,6 +182,30 @@
         where B.shared_by_user_id=#{user_id}
     </select>
 
+    <update id="modify">
+        update tbl_study
+        set title=#{title},
+        content=#{content},
+        field=#{field},
+        tag=#{tag},
+        status=#{status},
+        exposure_start=#{exposure_start},
+        exposure_end=#{exposure_end}
+        where no=#{no}
+
+    </update>
+
+    <!-- 원래 존재하는 테이블 삭제 -->
+    <delete id="delete_share">
+        delete from tbl_study_user
+        where study_idx =#{no}
+    </delete>
+
+    <!-- 학습 삭제 -->
+    <delete id = "delete_study">
+        delete from tbl_study
+        where no=#{no}
+    </delete>
 
 
 

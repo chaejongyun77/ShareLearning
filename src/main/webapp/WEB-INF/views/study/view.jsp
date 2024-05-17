@@ -14,6 +14,10 @@
 
             object-fit:cover;
         }*/
+        .icon-large{
+            font-size:50px;
+            pointer:cursor;
+        }
 
     </style>
 </head>
@@ -39,6 +43,7 @@
                                 class="fit-picture"
                                 src="/resources/upload/${studyDTO.img}"
                                 alt=""
+                                onerror="this.src='/resources/img/noimage.png'"
                                 style="object-fit: cover; width: 400px; height: 200px;"
                         />
 
@@ -58,10 +63,10 @@
                         <fieldset>
                             <legend style="font-size: 16px;">오늘의 학습 노출 여부</legend>
                             <label>
-                                노출 <input type="radio" name="status" value="Y" checked disabled  />
+                                노출 <input type="radio" name="status" value="Y" <c:if test="${studyDTO.status == 'Y'}">checked  </c:if>  disabled  />
                             </label>
                             <label>
-                                노출안함 <input type="radio" name="status" value="N" disabled />
+                                노출안함 <input type="radio" name="status" value="N"  <c:if test="${studyDTO.status == 'N'}">checked  </c:if> disabled />
                             </label>
                         </fieldset>
 
@@ -104,25 +109,37 @@
 
                     <div class="flex-grow-1">
                         <label for="tag" class="form-label">해시태그</label>
-                        <input type="text" class="form-control" name="tag" id="tag" value="#${studyDTO.tag}" readonly>
+                        <input type="text" class="form-control" name="tag" id="tag" value="${studyDTO.tag}" readonly>
                     </div>
 
 
 
                 </div>
                 <br>
+                <div class="d-flex" style="justify-content: center">
+
+                    <input type="image" src="/resources/img/like.png" data-user="${sessionScope.memberDTO.user_id}" name="btn_like" alt="좋아요"  data-study="${studyDTO.user_id}" >   <%--<i class="bi bi-chat-heart-fill icon-large" id="btn_like"></i>--%> &nbsp;<%--<span style="font-size: 30px">0</span>--%> <div id="result" style="font-size: 30px">0</div>
+
+                </div>
                 <div class="d-flex me-2" style="justify-content: flex-end;">
+
                 <div class="me-2">
                     <button type="button"  id="list_button" class="btn btn-primary justify-content-md-end"  onclick="location.href='/study/mystudy'" >목록</button>
                 </div>
+
+                    <c:if test="${sessionScope.memberDTO.user_id eq studyDTO.user_id}">
                 <div class="me-2">
                     <button type="button"  id="submit_button" class="btn btn-primary justify-content-md-end" onclick="location.href='/study/regist'"  >등록</button>
                 </div>
                 <div class="me-2">
-                    <button type="button"  id="modify_button" class="btn btn-primary justify-content-md-end"  >수정</button>
-                </div> <div class="me-2">
-                <button type="button"  id="delete_button" class="btn btn-primary justify-content-md-end"  >삭제</button>
+                    <button type="button"  id="modify_button" class="btn btn-primary justify-content-md-end"  onclick="location.href='/study/modify?no=${studyDTO.no}'">수정</button>
+                </div>
+
+                    <div class="me-2">
+                <button type="button"  id="delete_button" class="btn btn-primary justify-content-md-end" onclick="location.href='/study/delete?no=${studyDTO.no}'" >삭제</button>
                     </div>
+                    </c:if>
+
                 </div>
 
 
@@ -133,6 +150,27 @@
 
 </main>
 <%@ include file="../common/footer.jsp"%>
+<Script>
+
+    const delete_button = document.querySelector("#delete_button")
+
+
+  const btn_like = document.querySelector("#btn_like");
+
+/*
+    btn_like.addEventListener("click",function(e){
+        e.preventDefault();
+        const data_user =this.getAttribute('data-user');
+        const data_study =this.getAttribute('data-study');
+
+        if(data_user != ) {
+            alert("로그인이 필요합니다.");
+            return false;}
+        else{
+            location.href="../qna/like.do?like=${params.like}&no=${params.idx}&state=1"
+        }
+    });*/
+</Script>
 
 </body>
 </html>

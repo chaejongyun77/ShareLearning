@@ -46,6 +46,10 @@ public interface StudyMapper {
 
     int getSharedStudyTotalCount(String user_id);
 
+    int modify(StudyVO studyVO);
 
 
+    int delete_share(int no);
+
+    int delete_study(int no);
 }

@@ -66,7 +66,7 @@
                     <td>${list.title} </td> <%--<a href="/admin/apayment/view?payment_idx=${list.payment_idx}&book_idx=${list.book_idx}">${list.product_name} </a>--%>
                     <td>${list.reg_date}</td>
 
-                    <td>${list.like } ${responseDTO.page_block_start+1}</td>
+                    <td>${list.like } </td>
                     <td> ${list.status}</td>
                     <td>${list.exposure_start} ~ ${list.exposure_end} </td>
 

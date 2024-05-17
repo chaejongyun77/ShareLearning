@@ -26,4 +26,8 @@ public interface StudyServiceIf {
 
     //내가 공유받은 학습 페이지
     PageResponseDTO<StudyDTO> sharedListByPage(PageRequestDTO pageRequestDTO, String userId);
+
+    int modify(StudyDTO studyDTO);
+
+    int delete_study (int no);
 }
