@@ -75,7 +75,7 @@
                     <td>
                     <c:if test="${list.share_person !=null}">
                         <c:forEach var="person" items="${list.share_person}">
-                            <c:out value="${person}"/>님<br>
+                            <c:out value="${person}"/><br>
                         </c:forEach>
                     </c:if>
 

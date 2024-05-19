@@ -25,18 +25,24 @@
 <body>
 <%@ include file="../common/header.jsp"%>
 <main class="main-content">
+    <input type="date" class="form-control" name="reg_date" id="reg_date" value="${reg_date}" >
     <section id="team" class="team section" >
 
         <!-- Section Title -->
         <div class="container section-title aos-init aos-animate" data-aos="fade-up">
-            <h2>  <i class="bi bi-arrow-left-circle-fill" id="prevDay" ></i> &nbsp;
-                <span id="studyText">오늘의 학습</span> &nbsp;  <i class="bi bi-arrow-right-circle-fill" id="nextDay" ></i></h2>
+
+            <h2> <%-- <i class="bi bi-arrow-left-circle-fill" id="prevDay" ></i> &nbsp;--%>
+                <span id="studyText">${reg_date}일 학습</span> &nbsp; <%-- <i class="bi bi-arrow-right-circle-fill" id="nextDay" ></i>--%></h2>
             <h4><div id="currentDate"></div></h4>
         </div><!-- End Section Title -->
 
         <div class="container">
 
             <div class="row gy-4">
+                <c:choose>
+                    <c:when test="${not empty studyDTO}" >
+
+
                 <c:forEach items="${studyDTO}" var="list" begin="0" end="3" varStatus="count">
                 <div class="col-lg-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
 
@@ -59,8 +65,11 @@
 
                 </div><!-- End Team Member -->
                 </c:forEach>
-
-
+                    </c:when>
+            <c:otherwise>
+                    <h1 style="text-align: center">해당하는 학습이 없습니다.</h1>
+            </c:otherwise>
+                </c:choose>
             </div>
 
         </div>
@@ -71,7 +80,7 @@
 <%@ include file="../common/footer.jsp"%>
 <script>
 
-    document.addEventListener('DOMContentLoaded', function() {
+  /*  document.addEventListener('DOMContentLoaded', function() {
         let currentDate = new Date(); // 현재 날짜와 시간
         currentDate.setHours(0, 0, 0, 0); // 시간을 00:00:00.000으로 설정
         const today = new Date(); // 처음 페이지를 로드할 때의 날짜 (오늘)
@@ -89,9 +98,9 @@
 
             return [year, month, day].join('-');
         }
+*/
 
-
-        // 현재 날짜 표시 및 학습 텍스트 업데이트
+      /*  // 현재 날짜 표시 및 학습 텍스트 업데이트
         function displayCurrentDate() {
             document.getElementById('currentDate').textContent = formatDate(currentDate);
 
@@ -125,7 +134,17 @@
 
 
 
-    });
+    });*/
+
+    var selectBox = document.getElementById('reg_date');
+    selectBox.onchange = function() {
+        // 선택된 값
+        var selectedValue = this.value;
+
+
+        // 페이지 이동
+        window.location.href = '/study/today?reg_date=' + selectedValue;
+    };
 </script>
 </body>
 </html>

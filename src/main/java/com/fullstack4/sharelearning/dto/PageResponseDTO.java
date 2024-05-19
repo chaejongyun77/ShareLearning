@@ -39,6 +39,9 @@ public class PageResponseDTO<E> {
 
     private String linkParams;
 
+    // 좋아요 순
+    private String search_like;
+
     PageResponseDTO() {}
 
     @Builder(builderMethodName = "withAll")
@@ -69,6 +72,7 @@ public class PageResponseDTO<E> {
         cate2 = requestDTO.getCate2()!=null?requestDTO.getCate2():null;
         cate3 = requestDTO.getCate3()!=null?requestDTO.getCate3():null;
         order = requestDTO.getOrder()!=null?requestDTO.getOrder():null;
+        search_like = requestDTO.getSearch_like()!=null?requestDTO.getSearch_like():null;
 
 
         StringBuilder search_type_String = new StringBuilder();
@@ -97,6 +101,10 @@ public class PageResponseDTO<E> {
         }
         if(cate3 != null) {
             search_type_String.append("&cate3=" + cate3);
+        }
+
+        if(search_like != null) {
+            search_type_String.append("&search_like=" + search_like);
         }
 
         this.linkParams = "?page_size="+ this.page_size+search_type_String.toString();

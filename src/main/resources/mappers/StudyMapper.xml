@@ -13,6 +13,7 @@
                     <if test="type=='t'.toString()">
                         title like concat('%', #{search_word},'%')
                     </if>
+
                     <!--<if test="type=='u'.toString()">
                         user_id like concat('%', #{search_word},'%')
                     </if>-->
@@ -28,6 +29,7 @@
                     ADDDATE(#{search_date2},1) >= reg_date
                 </trim>
             </if>
+
 
         </where>
     </sql>
@@ -83,7 +85,7 @@
         from tbl_study
         where user_id=#{user_id}
         <!--오늘의 학습만 -->
-        and DATE(reg_date) = CURDATE()
+        and DATE(`reg_date`) = DATE(#{reg_date})
         and status='Y'
     <!--    and DATE(reg_date) = #{reg_date}-->
     </select>
@@ -105,7 +107,12 @@
         where user_id=#{user_id}
 
         <include refid="whereCondition1"></include>
+        <if test="search_like !=null and search_like !=''">
+            ORDER BY `like` DESC
+        </if>
+        <if test="search_like ==null and search_like ==''">
         ORDER BY no DESC
+        </if>
         LIMIT #{page_skip_count}, #{page_size}
     </select>
 
@@ -206,6 +213,25 @@
         delete from tbl_study
         where no=#{no}
     </delete>
+
+    <!-- 좋아요 기능 -->
+
+    <insert id="insert_like" >
+        insert into tbl_like(user_id,study_idx)
+        values (#{user_id},#{study_idx})
+    </insert>
+
+    <select id="select_like" resultType="int">
+        select COUNT(*) as count
+        from tbl_like
+        where user_id=#{user_id} and study_idx = #{study_idx}
+    </select>
+
+    <update id="update_like">
+        update tbl_study
+        set `like`= `like`+1
+        where no=#{study_idx}
+    </update>
 
 
 

@@ -4,6 +4,7 @@
 <head>
     <title>Title</title>
     <link href="/resources/css/common.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
         .main-content{
             padding-top: 120px;
@@ -28,6 +29,7 @@
     <div class="card">
         <div class="card-body p-4">
             <form name="frmRegist" id="frmRegist" method="post" action="/study/regist" enctype="multipart/form-data">
+                <input type="hidden" name="study_idx" id="study_idx" class="study_idx" value="${studyDTO.no}" data-study_idx="${studyDTO.no}">
 
                 <div class="mb-3">
                     <label for="title" class="form-label">제목</label>
@@ -43,7 +45,7 @@
                                 class="fit-picture"
                                 src="/resources/upload/${studyDTO.img}"
                                 alt=""
-                                onerror="this.src='/resources/img/noimage.png'"
+                                onerror="this.src='/resources/img/noimage2.png'"
                                 style="object-fit: cover; width: 400px; height: 200px;"
                         />
 
@@ -118,7 +120,7 @@
                 <br>
                 <div class="d-flex" style="justify-content: center">
 
-                    <input type="image" src="/resources/img/like.png" data-user="${sessionScope.memberDTO.user_id}" name="btn_like" alt="좋아요"  data-study="${studyDTO.user_id}" >   <%--<i class="bi bi-chat-heart-fill icon-large" id="btn_like"></i>--%> &nbsp;<%--<span style="font-size: 30px">0</span>--%> <div id="result" style="font-size: 30px">0</div>
+                    <input type="image" src="/resources/img/like.png" data-user="${sessionScope.memberDTO.user_id}"  id="btn_like" class= "btn_like" name="btn_like" alt="좋아요"  data-study="${studyDTO.user_id}" >   <%--<i class="bi bi-chat-heart-fill icon-large" id="btn_like"></i>--%> &nbsp;<%--<span style="font-size: 30px">0</span>--%> <div id="result" style="font-size: 30px">${studyDTO.like}</div>
 
                 </div>
                 <div class="d-flex me-2" style="justify-content: flex-end;">
@@ -152,24 +154,64 @@
 <%@ include file="../common/footer.jsp"%>
 <Script>
 
-    const delete_button = document.querySelector("#delete_button")
+    const delete_button = document.querySelector("#delete_button");
+    delete_button.addEventListener("click",function(e){
+       e.preventDefault();
+       const confirm_msg = "정말로 삭제하시겠습니까?";
+       if(confirm(confirm_msg)){
+           alert("삭제되었습니다.");
+           const study_idx = document.querySelector("#study_idx");
+           location.href='/study/delete?no='+study_idx.value;
+       }
+
+    });
 
 
   const btn_like = document.querySelector("#btn_like");
 
-/*
-    btn_like.addEventListener("click",function(e){
-        e.preventDefault();
-        const data_user =this.getAttribute('data-user');
-        const data_study =this.getAttribute('data-study');
 
-        if(data_user != ) {
-            alert("로그인이 필요합니다.");
-            return false;}
-        else{
-            location.href="../qna/like.do?like=${params.like}&no=${params.idx}&state=1"
+    btn_like.addEventListener("click",function(e){
+     e.preventDefault();
+     const user_id = btn_like.getAttribute("data-user");
+     const study_id = btn_like.getAttribute("data-study");
+     if(user_id === study_id){
+         alert("작성자는 추천할 수 없습니다.");
+         return false;
+     }
+
+
+
+
+    const study_idx = $('#study_idx').val();
+
+
+    $.ajax({
+        url: '/study/like',
+        type: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
+        dataType: 'json',
+        data: { study_idx: study_idx }, // 수정된 부분
+
+        success: function(response) {
+
+
+            if(response.success) {
+                alert(response.message);
+                window.location.href = response.redirect;
+
+            } else {
+                alert(response.message);
+
+            }
+        },
+        error: function() {
+            alert("서버와의 통신 중 오류가 발생했습니다.");
         }
-    });*/
+    });
+
+
+
+    });
 </Script>
 
 </body>

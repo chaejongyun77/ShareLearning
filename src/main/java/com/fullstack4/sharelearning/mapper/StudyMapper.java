@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface StudyMapper {
 
-    List<StudyVO> study_info(String user_id);
+    List<StudyVO> study_info(@Param("user_id") String user_id,@Param("reg_date") String reg_date);
 
     /*List<StudyVO> study_info(@Param("user_id") String user_id,@Param("reg_date") LocalDate reg_date);*/
 
@@ -52,4 +52,11 @@ public interface StudyMapper {
     int delete_share(int no);
 
     int delete_study(int no);
+
+    //좋아요 기능
+    int insert_like(@Param("user_id")String user_id, @Param("study_idx")int study_idx);
+
+    int update_like (int study_idx);
+
+    int select_like (@Param("user_id")String user_id, @Param("study_idx")int study_idx);
 }

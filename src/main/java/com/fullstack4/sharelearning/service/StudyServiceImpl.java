@@ -23,8 +23,8 @@ public class StudyServiceImpl implements StudyServiceIf{
     private final ModelMapper modelMapper;
 
     @Override
-    public List<StudyDTO> study_info(String user_id) {
-        List<StudyDTO> bbsDTOList = studyMapper.study_info(user_id).stream().map(vo -> {
+    public List<StudyDTO> study_info(String user_id,String reg_date) {//수정
+        List<StudyDTO> bbsDTOList = studyMapper.study_info(user_id,reg_date).stream().map(vo -> {
             StudyDTO dto = modelMapper.map(vo, StudyDTO.class);
             // 각 학습에 대한 공유 사용자 정보 가져오기
             List<StudyUserDTO> sharedUsers = studyMapper.findSharedUsers(vo.getNo()).stream().map(userVO -> modelMapper.map(userVO, StudyUserDTO.class)).collect(Collectors.toList());
@@ -165,6 +165,38 @@ public class StudyServiceImpl implements StudyServiceIf{
         int result = studyMapper.delete_study(no);
 
         return result;
+    }
+
+    @Override
+    public int insert_like(String user_id, int study_idx) {
+
+        System.out.println("insert_like로 들어옴?");
+        System.out.println("user_id : " + user_id);
+        System.out.println("study_idx : " + study_idx);
+
+
+        // 회원이 누른 좋아요 게시글 확인
+        int select_result = studyMapper.select_like(user_id,study_idx);
+        System.out.println("select_result : " + select_result);
+
+        if(select_result==0){
+            //좋아요 테이블 삽입
+            int insert_result = studyMapper.insert_like(user_id,study_idx);
+            System.out.println("insert_result : " + insert_result);
+
+            // 학습테이블 좋아요 갯수 업데이트
+            int update_result = studyMapper.update_like(study_idx);
+            System.out.println("update_result : " + update_result);
+
+            return 1;
+
+        }
+        else{
+          return 0;
+        }
+
+
+
     }
 
 

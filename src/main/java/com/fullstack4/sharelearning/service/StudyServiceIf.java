@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface StudyServiceIf {
-    List<StudyDTO> study_info(String user_id);
+    List<StudyDTO> study_info(String user_id,String reg_date); //수정
 /*    List<StudyDTO> study_info(String user_id, LocalDate date);*/
 
     PageResponseDTO<StudyDTO> bbsListByPage(PageRequestDTO pageRequestDTO);
@@ -30,4 +30,6 @@ public interface StudyServiceIf {
     int modify(StudyDTO studyDTO);
 
     int delete_study (int no);
+
+    int insert_like(String user_id, int study_idx);
 }

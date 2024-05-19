@@ -65,7 +65,7 @@ public class PageRequestDTO {
 
     //게시글 등록할 때 공유한 사람들 목록
     private String[] share_person;
-
+    private String search_like;
 
     public void setTotal_count(int total_count) {
         this.total_count = total_count;
