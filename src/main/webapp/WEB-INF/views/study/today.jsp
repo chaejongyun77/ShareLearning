@@ -48,7 +48,7 @@
 
 
                     <div class="team-member d-flex align-items-start">
-                        <div class="pic"><img src="/resources/img/${list.img}" class="img-fluid" alt=""  style="height: 200px !important; width: 200px !important;"></div>
+                        <div class="pic"><img src="/resources/upload/${list.img}" class="img-fluid" alt=""  style="height: 200px !important; width: 200px !important;"></div>
                         <div class="member-info">
                             <h4> <a href="/study/view?no=${list.no}" style="text-decoration: none;">${list.title}</a></h4>
                             <span>${list.field} &nbsp; #${list.tag}</span>

@@ -1,9 +1,11 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" trimDirectiveWhitespaces="true" pageEncoding="UTF-8" %>
+
 <html>
 <head>
     <title>Title</title>
     <link href="/resources/css/common.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <style>
     .main-content{
@@ -34,7 +36,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="content" class="form-label">학습내용</label>
-                    <textarea class="form-control" name="content" id="content" rows="5" cols="60" style="resize: none;" maxlength="400"></textarea>
+                        <textarea class="form-control" name="content" id="content" rows="5" cols="60" style="resize: none;" maxlength="400"></textarea>
 
                 </div>
                 <div class="mb-3">
@@ -117,14 +119,35 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <form name="searchid" id="searchid" action="/study/searchid">
+                <div class="input-group mb-1">
+                    <span class="input-group-text ">검색범위</span>
+                    <div class="input-group-text">
+                        <div class="form-check form-switch form-check-inline" >
+                            <label class="form-check-label" for="search_type_0">아이디</label>
+                            <input class="form-check-input" role="switch" type="checkbox" value="t" name="search_type" id="search_type_0" ${search_typeflag_0}>
+                        </div>
 
-                    <div class="mb-3">
-                    <c:forEach items="${member}" var="list" varStatus="status" >
-                       <h5> <input type="checkbox" class="shard_user" id="shared_user${status.count}" name="shard_user" value="${list.user_id}" > ${list.user_id}<br></h5>
-                    </c:forEach>
                     </div>
 
+                    <input class="form-control" type="text" name="search_word" id="search_word" placeholder="검색어" value="${responseDTO.search_word}">
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-1">
+                    <button class="btn btn-outline-primary" type="submit" id="search_button">검색</button>
+                    <button class="btn btn-outline-primary" type="button" onclick="window.location.href='/study/mystudy'">검색 초기화</button>
+                </div>
+                    <hr>
+                    <div class="mb-3" id="memberContainer">
+                    <%--<c:forEach items="${member}" var="list" varStatus="status" >
+                       <h5> <input type="checkbox" class="shard_user" id="shared_user${status.count}" name="shard_user" value="${list.user_id}" > ${list.user_id}<br></h5>
+                    </c:forEach>--%>
+                    </div>
+                </form>
+
+
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_regist">취소</button>
                  <button type="button" class="btn btn-primary" onclick="share()"> 공유 </button>
@@ -215,6 +238,59 @@
         exposureStart.setAttribute('readonly', 'readonly');
         exposureEnd.setAttribute('readonly', 'readonly');
     }
+
+    const search_button = document.querySelector("#search_button");
+    search_button.addEventListener("click",function(e){
+       e.preventDefault();
+
+        const search_word = $('#search_word').val();
+        const search_type = $('#search_type_0').val();
+
+
+
+        $.ajax({
+            url: '/study/searchid',
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded',
+            dataType: 'json',
+            data: {
+                search_word: search_word,
+                search_type:search_type
+            }, // 수정된 부분
+
+            success: function(response) {
+
+
+                if(response.success) {
+                    const members = response.data.dtoList; // 서버로부터 받은 사용자 목록 데이터
+                    const memberContainer = $('#memberContainer'); // 사용자 목록을 삽입할 컨테이너
+                    memberContainer.empty(); // 기존 내용을 지우고 새로운 목록을 추가하기 위해 컨테이너를 비웁니다.
+
+                    $.each(members, function(index, member) {
+                        const memberElement = '<h5>' +
+                            '<input type="checkbox" class="shard_user" id="shared_user' + (index + 1) + '" name="shard_user" value="' + member.user_id + '">' +' &nbsp;아이디 : &nbsp;' +
+                            member.user_id + '<br>' +
+                            '</h5>';
+                        memberContainer.append(memberElement);
+                    });
+
+// 페이지네이션 생성
+
+
+
+
+                } else {
+                    alert(response.message);
+
+                }
+            },
+            error: function() {
+                alert("서버와의 통신 중 오류가 발생했습니다.");
+            }
+        });
+    });
+    // 페이지 이동을 처리하는 함수
+
 
 
 </Script>

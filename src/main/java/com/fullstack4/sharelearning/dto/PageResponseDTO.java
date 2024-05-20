@@ -51,6 +51,7 @@ public class PageResponseDTO<E> {
         this.total_count = total_count;
         this.page = requestDTO.getPage();
         this.page_size = requestDTO.getPage_size();
+        this.user_id = requestDTO.getUser_id();
         this.page_skip_count = (this.page-1)*this.page_size;
         this.total_page = (this.total_count > 0 ?
                 (int)Math.ceil(this.total_count/(double)this.page_size) : 1);

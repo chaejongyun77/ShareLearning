@@ -57,8 +57,12 @@
 
                 </div>
 
+
+                <button type="button" id="deleteImageForm" class="btn btn-danger" data-img="${studyDTO.img}" data-no="${stduyDTO.no}">이미지 삭제</button>
+
                 <br>
                 <div class="d-flex">
+
                     <div class="flex-grow-1 me-2">
 
                         <fieldset>
@@ -157,7 +161,7 @@
         </div>
     </div>
 </div>
-<%@ include file="../common/footer.jsp"%>
+
 <script>
 
     const radioButtons = document.querySelectorAll('input[name="status"]');
@@ -208,6 +212,37 @@
        }
 
 
+    });
+
+    //이미지삭제
+    const deleteImage = document.querySelector("#delete_button");
+    deleteImage.addEventListener("click",function(e){
+       e.preventDefault();
+
+        const img = deleteImage.getAttribute("data-img");
+        const no = deleteImage.getAttribute("data-no");
+        alert(img);
+        alert(no);
+
+        if (confirm('이미지를 삭제하시겠습니까?')) {
+            $.ajax({
+                url: '/study/deleteImage',
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: 'json',
+                data: {
+                    no: no,
+                    img: img
+                },
+                success: function(response) {
+                    alert('이미지가 삭제되었습니다.');
+                    $('#fit-picture').attr('src', '/resources/img/noimage2.png');
+                },
+                error: function(xhr, status, error) {
+                    alert('이미지 삭제에 실패했습니다.');
+                }
+            });
+        }
     });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

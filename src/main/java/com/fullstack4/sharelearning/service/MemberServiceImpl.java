@@ -1,8 +1,8 @@
 package com.fullstack4.sharelearning.service;
 
 import com.fullstack4.sharelearning.domain.MemberVO;
-import com.fullstack4.sharelearning.dto.LoginDTO;
-import com.fullstack4.sharelearning.dto.MemberDTO;
+import com.fullstack4.sharelearning.domain.StudyVO;
+import com.fullstack4.sharelearning.dto.*;
 import com.fullstack4.sharelearning.mapper.LoginMapper;
 import com.fullstack4.sharelearning.mapper.MemberMapper;
 import com.fullstack4.sharelearning.util.CommonUtil;
@@ -35,5 +35,22 @@ public class MemberServiceImpl implements MemberServiceIf{
         List<MemberDTO> memberList = memberMapper.member_info(user_id).stream().map(vo->modelMapper.map(vo,MemberDTO.class)).collect(Collectors.toList());
 
         return memberList;
+    }
+
+    @Override
+    public PageResponseDTO<MemberDTO> memberByPage(PageRequestDTO pageRequestDTO) {
+        List<MemberVO> voList = memberMapper.memberByPage(pageRequestDTO);
+        List<MemberDTO> dtoList = voList.stream()
+                .map(vo -> modelMapper.map(vo, MemberDTO.class))
+                .collect(Collectors.toList());
+        int total_count = memberMapper.bbsTotalCount(pageRequestDTO);
+
+        PageResponseDTO<MemberDTO> responseDTO = PageResponseDTO.<MemberDTO>withAll()
+                .requestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total_count(total_count)
+                .build();
+
+        return responseDTO;
     }
 }

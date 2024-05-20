@@ -55,6 +55,7 @@
                     <label for="content" class="form-label" >학습내용</label>
                     <textarea class="form-control" name="content" id="content" rows="8" cols="60" style="resize: none;" maxlength="400" contentEditable="true" readonly>${studyDTO.content}</textarea>
                 </div>
+                    <!-- 이미지 삭제 버튼 -->
 
                 </div>
 
@@ -126,7 +127,7 @@
                 <div class="d-flex me-2" style="justify-content: flex-end;">
 
                 <div class="me-2">
-                    <button type="button"  id="list_button" class="btn btn-primary justify-content-md-end"  onclick="location.href='/study/mystudy'" >목록</button>
+                    <button type="button"  id="list_button" class="btn btn-primary justify-content-md-end"  onclick="location.href='/study/mystudy'"  data-user="${sessionScope.memberDTO.user_id}" data-study="${studyDTO.user_id}">목록</button>
                 </div>
 
                     <c:if test="${sessionScope.memberDTO.user_id eq studyDTO.user_id}">
@@ -154,6 +155,12 @@
 <%@ include file="../common/footer.jsp"%>
 <Script>
 
+
+    const list_button = document.querySelector("#list_button");
+    var user_id = list_button.getAttribute("data-user");
+    var study_id = list_button.getAttribute("data-study");
+    if(user_id ===study_id){
+
     const delete_button = document.querySelector("#delete_button");
     delete_button.addEventListener("click",function(e){
        e.preventDefault();
@@ -165,15 +172,15 @@
        }
 
     });
-
+}
 
   const btn_like = document.querySelector("#btn_like");
 
 
     btn_like.addEventListener("click",function(e){
      e.preventDefault();
-     const user_id = btn_like.getAttribute("data-user");
-     const study_id = btn_like.getAttribute("data-study");
+     var user_id = btn_like.getAttribute("data-user");
+     var study_id = btn_like.getAttribute("data-study");
      if(user_id === study_id){
          alert("작성자는 추천할 수 없습니다.");
          return false;
@@ -183,6 +190,9 @@
 
 
     const study_idx = $('#study_idx').val();
+     alert(study_idx);
+
+
 
 
     $.ajax({

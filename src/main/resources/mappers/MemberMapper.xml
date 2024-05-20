@@ -3,7 +3,26 @@
         PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
         "thhp://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fullstack4.sharelearning.mapper.MemberMapper">
+    <sql id="whereCondition">
+        <where>
 
+            <if test="search_type !=null and search_type !=''">
+                <foreach collection="search_type" item="type" separator=" OR ">
+                    <if test="type=='t'.toString()">
+                        user_id like concat('%', #{search_word},'%')
+                    </if>
+                    and user_id != #{user_id}
+
+                    <!--<if test="type=='u'.toString()">
+                        user_id like concat('%', #{search_word},'%')
+                    </if>-->
+                </foreach>
+            </if>
+
+
+
+        </where>
+    </sql>
 
     <update id="modify">
         update tbl_member
@@ -18,6 +37,17 @@
         select *
         from tbl_member
         where user_id !=#{user_id}
+    </select>
+
+    <select id="memberByPage" resultType="com.fullstack4.sharelearning.domain.MemberVO">
+        select *
+        FROM tbl_member
+        <include refid="whereCondition"></include>
+        LIMIT #{page_skip_count}, #{page_size}
+    </select>
+
+    <select id="bbsTotalCount" resultType="int">
+        SELECT COUNT(*) FROM tbl_member
     </select>
 
 </mapper>

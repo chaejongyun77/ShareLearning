@@ -110,9 +110,10 @@
         <if test="search_like !=null and search_like !=''">
             ORDER BY `like` DESC
         </if>
-        <if test="search_like ==null and search_like ==''">
+        <if test="search_like ==null or search_like ==''">
         ORDER BY no DESC
         </if>
+
         LIMIT #{page_skip_count}, #{page_size}
     </select>
 
@@ -232,6 +233,8 @@
         set `like`= `like`+1
         where no=#{study_idx}
     </update>
+
+
 
 
 

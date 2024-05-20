@@ -121,6 +121,8 @@ public class StudyController {
     @PostMapping("/regist")
     public String registPOST(StudyDTO studyDTO,MultipartHttpServletRequest files){
 
+        System.out.println("regist Post Controller");
+
         List<String> filenames = null;
        /* String realPath = servletContext.getRealPath("/resources/upload");*/
         String realPath ="D:\\java4\\sharelearn\\src\\main\\webapp\\resources\\upload"; // 강의실에선 이 경로로 변경
@@ -286,6 +288,77 @@ public class StudyController {
 
 
     }
+    @PostMapping("/searchid")
+    @ResponseBody
+    public ResponseEntity<?> searchIdPost(@RequestParam("search_word") String search_word, @RequestParam("search_type")String search_type,
+                                          Model model,HttpServletRequest req){
+
+
+        if(search_word.equals("") || search_word.length()==0){
+            Map<String, Object> resp = new HashMap<>();
+            resp.put("success", false);
+            resp.put("message", "검색어를 입력해주세요.");
+
+
+
+            return ResponseEntity.ok().body(resp);
+
+        }
+        HttpSession session = req.getSession(false);
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        String user_id = memberDTO.getUser_id();
+   
+        PageRequestDTO pageRequestDTO = new PageRequestDTO();
+        pageRequestDTO.setSearch_word(search_word);
+        pageRequestDTO.setUser_id(user_id);
+
+
+        String[] defaultSearchType = new String[] { search_type }; // 기본값 배열 생성
+        pageRequestDTO.setSearch_type(defaultSearchType);
+
+        PageResponseDTO<MemberDTO> responseDTO =memberService.memberByPage(pageRequestDTO);
+        System.out.println("responseDTO  : " + responseDTO);
+        
+
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("success", true);
+        resp.put("message", "성공");
+        resp.put("data", responseDTO);
+
+
+        return ResponseEntity.ok().body(resp);
+
+    }
+
+    @PostMapping("/deleteImage")
+    @ResponseBody
+    public ResponseEntity<?> deleteImage(@RequestParam("no") int no,@RequestParam("img") String img, HttpServletRequest req,
+                                      Model model){
+        System.out.println(" deleteImage 들어옴?" );
+        System.out.println(" no 들어옴?"+no );
+        System.out.println(" dimg 들어옴?" +img);
+
+        HttpSession session = req.getSession(false);
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("memberDTO");
+        String user_id = memberDTO.getUser_id();
+
+
+
+
+
+
+            Map<String, Object> resp = new HashMap<>();
+            resp.put("success", true);
+          /*  resp.put("message","추천완료");*/
+
+
+            return ResponseEntity.ok().body(resp);
+
+
+
+
+    }
+
 
 
 
